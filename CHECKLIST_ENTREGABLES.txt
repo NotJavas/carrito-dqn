@@ -115,5 +115,5 @@ Las entregas de Classroom se verifican por separado; esta lista registra el avan
 REPOSITORIO
 [x] Incluir código, siete corridas históricas, seis controladas, bitácora, 180 evaluaciones, video y este checklist.
 [x] Preparar instrucciones portables y conservar la atribución del paquete docente.
-[x] Publicar y verificar la copia remota: https://github.com/NotJavas/carrito-dqn (privado).
+[x] Publicar y verificar la copia remota: https://github.com/NotJavas/carrito-dqn (público).
 [x] Compartir el enlace y avance en Los Chilines; mensaje enviado el 24/11/2026.
