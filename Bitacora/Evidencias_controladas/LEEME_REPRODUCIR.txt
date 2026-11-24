@@ -1,0 +1,10 @@
+REPRODUCIR LAS CORRIDAS CONTROLADAS DESDE LA RAÍZ DEL REPOSITORIO
+
+python Bitacora/Evidencias_controladas/ejecutar_controlados_wrapper.py --source Bitacora/Evidencias_controladas/fuentes_base_mas001 --output runs/base42_nueva --seed 42 --coefficient 0.01
+
+Otra condición: sustituir --source por Bitacora/Evidencias_controladas/fuentes_costo_menos002 y --coefficient por -0.02, con una salida distinta. Usar semillas 42, 66 y 76 para cada condición.
+Siempre elegir una salida NUEVA. Cada corrida tiene un máximo de 600 episodios, ventana 100 y meta 99 %.
+
+Los metadatos y comandos guardados conservan las rutas y fechas reales de las ejecuciones originales. Son evidencia histórica; los ejemplos anteriores son los comandos portables para una nueva ejecución.
+La evaluación usa final_model.pt y diez repeticiones del mismo inicio fijo, sin exploración. Los retornos de recompensas diferentes no deben ordenarse como si tuvieran la misma escala.
+Los snapshots de fuentes conservan sus hashes originales. El script raíz comparar_politicas.py solo se adaptó para resolver rutas desde el repositorio y evitar sobrescribir resultados existentes.

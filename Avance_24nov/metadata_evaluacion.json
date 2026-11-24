@@ -1,0 +1,131 @@
+{
+  "inicio_real": "2026-11-24T04:18:57.875103-06:00",
+  "fin_real": "2026-11-24T04:19:14.086805-06:00",
+  "modelo": "C:\\Users\\Javas\\Desktop\\Carrito\\Carrito_DQN_Profesor\\results_seed76\\final_model.pt",
+  "sha256_modelo": "61e946c24c9c7f630b9eec5c0176f7abd66310ac3ebfd759192abec0bd16cdf0",
+  "recompensa_actual": "progress_reward + speed_reward - 0.02 - control_cost",
+  "train_config_modelo": {
+    "episodes": 2000,
+    "hidden_size": 64,
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "batch_size": 128,
+    "replay_capacity": 50000,
+    "learning_starts": 1000,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.05,
+    "epsilon_decay_steps": 45000,
+    "tau": 0.005,
+    "gradient_clip": 10.0,
+    "seed": 76,
+    "success_window": 30,
+    "early_stop_rate": 0.99
+  },
+  "track_config": {
+    "width": 1000,
+    "height": 700,
+    "center_x": 500.0,
+    "center_y": 350.0,
+    "outer_a": 430.0,
+    "outer_b": 285.0,
+    "inner_a": 255.0,
+    "inner_b": 125.0,
+    "sensor_range": 175.0,
+    "sensor_step": 4.0,
+    "target_laps": 1.0,
+    "max_steps": 1800
+  },
+  "car_config": {
+    "radius": 12.0,
+    "max_speed": 155.0,
+    "acceleration": 105.0,
+    "braking": 150.0,
+    "rolling_friction": 28.0,
+    "turn_rate": 2.35,
+    "dt": 0.03333333333333333
+  },
+  "protocolo": "30 episodios por política y tipo de inicio; seeds 1000..1029; acciones azar 2000..2029; CPU1 hilo; DQN training=False",
+  "seleccion_modelo": "Modelo histórico favorable elegido para demostración; no es réplica independiente de la matriz controlada ni selección universal óptima.",
+  "resumen": [
+    {
+      "inicio": "fijo",
+      "politica": "DQN_final_seed76",
+      "episodios": 30,
+      "exitos": 30,
+      "colisiones": 0,
+      "tasa_exito": 1,
+      "tasa_colision": 0,
+      "retorno_medio": 150.6031125407296,
+      "pasos_vueltas_exitosas": 288,
+      "DE_pasos_exitosos": 0.0
+    },
+    {
+      "inicio": "fijo",
+      "politica": "reglas",
+      "episodios": 30,
+      "exitos": 30,
+      "colisiones": 0,
+      "tasa_exito": 1,
+      "tasa_colision": 0,
+      "retorno_medio": 148.2192492172472,
+      "pasos_vueltas_exitosas": 547,
+      "DE_pasos_exitosos": 0.0
+    },
+    {
+      "inicio": "fijo",
+      "politica": "azar",
+      "episodios": 30,
+      "exitos": 0,
+      "colisiones": 20,
+      "tasa_exito": 0,
+      "tasa_colision": 0.6666666666666666,
+      "retorno_medio": -32.47359492673337,
+      "pasos_vueltas_exitosas": null,
+      "DE_pasos_exitosos": null
+    },
+    {
+      "inicio": "aleatorio",
+      "politica": "DQN_final_seed76",
+      "episodios": 30,
+      "exitos": 30,
+      "colisiones": 0,
+      "tasa_exito": 1,
+      "tasa_colision": 0,
+      "retorno_medio": 150.62685288574784,
+      "pasos_vueltas_exitosas": 288.1,
+      "DE_pasos_exitosos": 0.30512857662936466
+    },
+    {
+      "inicio": "aleatorio",
+      "politica": "reglas",
+      "episodios": 30,
+      "exitos": 30,
+      "colisiones": 0,
+      "tasa_exito": 1,
+      "tasa_colision": 0,
+      "retorno_medio": 148.1902461450715,
+      "pasos_vueltas_exitosas": 546.8333333333334,
+      "DE_pasos_exitosos": 0.3790490217894517
+    },
+    {
+      "inicio": "aleatorio",
+      "politica": "azar",
+      "episodios": 30,
+      "exitos": 0,
+      "colisiones": 21,
+      "tasa_exito": 0,
+      "tasa_colision": 0.7,
+      "retorno_medio": -33.424428407431996,
+      "pasos_vueltas_exitosas": null,
+      "DE_pasos_exitosos": null
+    }
+  ],
+  "video": {
+    "fps": 30,
+    "fotogramas": 363,
+    "exito": 1,
+    "pasos": 288,
+    "retorno": 150.6031125407296,
+    "inicio_aleatorio": false
+  }
+}

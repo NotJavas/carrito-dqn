@@ -1,0 +1,300 @@
+﻿Bitácora del carrito autónomo con DQN
+
+Registro de instalación ajustes y experimentos
+
+Proyecto local: C:\Users\Javas\Desktop\Carrito. Periodo de trabajo documentado: 22 al 24 de noviembre de 2026. Horarios expresados en America/Mexico_City. El registro reúne siete corridas exploratorias previas y seis corridas controladas nuevas.
+
+El propósito fue comprender y ejecutar el proyecto docente, verificar la conducción aprendida y estudiar cómo cambia el comportamiento al modificar la recompensa. La trayectoria de trabajo pasó por instalación, validación, pruebas CPU/GPU, entrenamiento, evaluación, ajustes de recompensa y consolidación de evidencia.
+
+1 Preparación y decisión de ejecución
+
+Se partió de un paquete que ya implementaba el simulador y DQN. Los dos ZIP proporcionados contenían los mismos diez archivos Python; solo difería un registro previo de TensorBoard. Se utilizó una sola copia de trabajo en Carrito_DQN_Profesor.
+
+La creación inicial del entorno falló porque el lanzador no encontraba Python 3.11. Se instaló Python 3.11.9, se creó .venv y se instalaron requirements.txt. check_environment.py validó espacios, transiciones y render; pip check no encontró dependencias rotas. Los comandos se ejecutaron con el Python del entorno para evitar confundir intérpretes.
+
+A petición del usuario se creó .venv-amd con PyTorch para ROCm. La RX 9070 XT se detectó y completó 220 actualizaciones DQN con pérdidas finitas, cambios en los pesos y guardado/carga de checkpoint. El controlador probado fue 32.0.31044.16; no se actualizó el controlador ni se modificó hardware.
+
+Prueba técnica de 20 episodios | GPU AMD | CPU
+
+Semilla | 42 | 42
+
+Tiempo total medido | 36.17 s | 17.46 s
+
+Pasos de entrenamiento | 14 621 | 14 433
+
+Resultado técnico | Ejecución completa | Ejecución completa
+
+
+
+El usuario eligió CPU por el menor tiempo de esa prueba. train.py y evaluate.py quedaron con torch.device("cpu"). Los tiempos incluyen el proceso completo y las trayectorias difirieron ligeramente; no constituyen un benchmark universal. Las pruebas de instalación no se cuentan como réplicas experimentales del equipo.
+
+Entorno CPU registrado: Python 3.11.9, PyTorch 2.15.0+cpu, NumPy 2.4.6, pandas 2.3.3, Matplotlib 3.11.2, Gymnasium 1.4.0, Pygame 2.6.1 y TensorBoard 2.21.0.
+
+
+
+
+2 Historial de ajustes realizados
+
+Elemento | Situación inicial | Ajuste y razón
+
+Dispositivo | Selección automática de CUDA/MPS/CPU. | CPU explícita en entrenamiento y evaluación tras la comparación técnica.
+
+Máximo de episodios | TrainConfig.episodes = 600. | El usuario escribió 5000 en config.py. Los argumentos de train.py siguen prevaleciendo: por defecto 600, o el valor de --episodes.
+
+Meta de éxito | early_stop_rate = 0.90. | Se exploró 0.999 en el archivo y después se dejó 0.99. Cada corrida se describe con el valor de su checkpoint.
+
+Ventana de éxito | success_window = 30. | El usuario la cambió a 100 para exigir consistencia sobre más episodios.
+
+Recompensa por paso | Término constante +0.01. | Se probó -0.01. El usuario confirmó que pasó por -0.03, saltándose primero -0.02, y luego volvió a -0.02.
+
+Visualización y mensajes | Meta 90 %, ventana 30 y etiqueta TensorBoard fijas. | Se vincularon a early_stop_rate y success_window. El mensaje ahora indica episodio, éxitos/ventana y meta.
+
+
+
+La recompensa actual es: reward = progress_reward + speed_reward - 0.02 - control_cost. Los términos de avance, velocidad alineada, costo de giro, choque (-25) y vuelta completa (+35) se conservaron. La hipótesis fue que un costo por paso podría favorecer vueltas más cortas; los resultados se evalúan por éxito, colisiones y pasos, no solo por retorno.
+
+El ajuste de mensajes y gráficas fue una corrección de presentación: no cambió el criterio de aprendizaje ni reentrenó modelos. Se verificaron etiquetas de 90 %, 99 % y 99.9 %. Las imágenes guardadas antes de la corrección no se actualizan automáticamente.
+
+El tamaño de red, gamma, tasa de aprendizaje, sensores y física no se modificaron en el historial verificado. No se implementó reanudar entrenamiento desde un checkpoint: train.py crea una red y memoria nuevas; evaluate.py carga un modelo y conduce sin exploración.
+
+Se aclaró también que los .pt son archivos binarios y se cargan con evaluate.py, no mediante un cambio de codificación del editor. El evento original de results_smoke pertenece al profesor; los registros propios están en las carpetas de cada corrida.
+
+
+
+
+3 Configuración y criterios de registro
+
+Componente | Valores verificados
+
+Red y representación | 5 sensores + velocidad + seno/coseno del error angular + posición lateral = 9 entradas; red 9-64-64-9; 9 acciones discretas.
+
+Aprendizaje | learning_rate = 0.0003; gamma = 0.99; AdamW con amsgrad; pérdida Huber.
+
+Memoria y lotes | 50 000 transiciones; batch_size = 128; learning_starts = 1000.
+
+Exploración | epsilon_start = 1.0; epsilon_end = 0.05; reducción exponencial con escala 45 000 pasos.
+
+Estabilización | tau = 0.005; recorte del gradiente = 10.
+
+Objetivo y límites | 1 vuelta; máximo 1800 pasos por episodio; dt = 1/30 s.
+
+Vehículo actual | Radio 12; velocidad máxima 155; aceleración 105; frenado 150; fricción 28; giro 2.35.
+
+Pista actual | 1000 por 700; centro (500,350); elipse exterior (430,285), interior (255,125); alcance sensorial 175; paso del rayo 4.
+
+Parada actual | Ventana 100 y meta 0.99: 99 éxitos entre los últimos 100. En corridas anteriores se usó otra ventana/meta.
+
+
+
+El límite efectivo se recuperó de cada checkpoint. Escribir 5000 solo en TrainConfig no obliga a ejecutar 5000 episodios: train.py sustituye ese campo por --episodes. La parada temprana puede terminar antes del máximo. La terminal imprime progreso cada 20 episodios, por lo que el último número visible puede ser menor que el episodio final del CSV.
+
+Se distinguieron tres fuentes de evidencia: configuración guardada en el checkpoint; cambios observados y confirmados en el historial de trabajo; y reconstrucción condicional de la recompensa. Las horas históricas que se registran por corrida son la última modificación del archivo del modelo, no una duración ni una hora de inicio medida.
+
+La evaluación automática histórica corresponde a final_model.pt. best_model.pt se guarda por mejor retorno móvil de entrenamiento, no por menor número de pasos. Los pasos por vuelta solo se reportan si hubo éxito. Un episodio fallido puede tener pocos pasos porque chocó pronto; eso no lo convierte en una vuelta rápida.
+
+
+
+
+4 Inventario de corridas exploratorias
+
+ID | Semilla | Límite | Ejecutados | Ventana | Meta | c estimado
+
+H01 | 42 | 600 | 121 | 30 | 90 % | +0.01
+
+H02 | 67 | 2000 | 163 | 30 | 90 % | +0.01
+
+H03 | 76 | 2000 | 122 | 30 | 99 % | -0.01
+
+H04 | 66 | 2000 | 944 | 100 | 99 % | -0.01
+
+H05 | 201 | 2000 | 2000 | 100 | 99 % | -0.01
+
+H06 | 23 | 2000 | 2000 | 100 | 99 % | -0.03
+
+H07 | 66 | 2000 | 2000 | 100 | 99 % | -0.03
+
+
+
+c es la constante por paso en la recompensa. Los valores de esa columna se reconstruyeron mediante la prueba descrita abajo; no son un campo guardado por TrainConfig.
+
+ID | Retorno histórico | Éxito final | Colisión final | Pasos por vuelta
+
+H01 | 159.6108 | 100 % | 0 % | 294
+
+H02 | 160.2201 | 100 % | 0 % | 296
+
+H03 | 153.4831 | 100 % | 0 % | 288
+
+H04 | 154.1308 | 100 % | 0 % | 291
+
+H05 | -16.6170 | 0 % | 100 % | No aplicable
+
+H06 | 148.6088 | 100 % | 0 % | 350
+
+H07 | -9.7333 | 0 % | 100 % | No aplicable
+
+
+
+Los retornos son los guardados originalmente por cada corrida y no deben compararse directamente entre recompensas diferentes. Los pasos provienen de una reevaluación adicional de cada modelo final con la física actual: dos repeticiones de un inicio fijo, sin exploración. En las siete corridas, ambas repeticiones coincidieron y reprodujeron el resultado histórico de éxito/colisión.
+
+Reconstrucción utilizada: c_histórico = -0.02 + (R_histórico - R_actual) / pasos. Supone que la física, el resto de la recompensa, el inicio fijo y la política se conservaron. Bajo esos supuestos los coeficientes ajustaron a +0.01, -0.01 o -0.03 con error numérico menor que 1e-8. Esta consistencia no reemplaza un snapshot histórico completo.
+
+La confirmación del usuario sobre haber probado -0.03 y después volver a -0.02 respalda la secuencia general. No asigna por sí sola cada carpeta: por eso se conserva la clasificación de recompensa reconstruida, especialmente en results_seed23 y results_seed201. El nombre tiempo002 no se usa como prueba del coeficiente.
+
+
+
+
+5 Fichas e incidencias por corrida exploratoria
+
+Cada carpeta conserva training_log.csv, training_curves.png, evaluation_summary.csv, final_model.pt y best_model.pt. Las fechas siguientes corresponden a la modificación del modelo final.
+
+H01 results
+
+Semilla 42; 121 episodios; meta de éxito alcanzada. Última modificación del modelo: 22/11/2026 22:14:17.
+
+Corrida inicial con el criterio 30/90. Permitió comprobar el flujo completo de entrenamiento, guardado y evaluación.
+
+Última ventana: 27/30 éxitos; epsilon final 0.4288.
+
+H02 results_seed67
+
+Semilla 67; 163 episodios; meta de éxito alcanzada. Última modificación del modelo: 22/11/2026 22:46:00.
+
+Corrida propia con semilla 67. El checkpoint guardó meta 90 %, aunque después se observó otro valor en config.py; se conserva lo que realmente guardó el modelo.
+
+Última ventana: 27/30 éxitos; epsilon final 0.3394.
+
+H03 results_seed76
+
+Semilla 76; 122 episodios; meta de éxito alcanzada. Última modificación del modelo: 22/11/2026 23:06:00.
+
+Se discutió después del cambio a costo por paso -0.01. Todavía utilizó ventana 30. El historial mostró 288 pasos por vuelta; cambiar semilla y recompensa simultáneamente impide atribuir la mejora a un solo factor.
+
+Última ventana: 30/30 éxitos; epsilon final 0.4113.
+
+H04 results_seed66
+
+Semilla 66; 944 episodios; meta de éxito alcanzada. Última modificación del modelo: 22/11/2026 23:11:39.
+
+Usó ventana 100 y meta 99 %. La variabilidad del entrenamiento incluyó periodos de mejora, caída y recuperación. Alcanzó 99/100 al detenerse y su modelo final completó la vuelta.
+
+Última ventana: 99/100 éxitos; epsilon final 0.0764.
+
+H05 results_seed201
+
+Semilla 201; 2000 episodios; máximo de episodios alcanzado. Última modificación del modelo: 22/11/2026 23:21:13.
+
+Agotó el presupuesto y su modelo final chocó en la evaluación guardada. Se conserva el fallo como evidencia de variabilidad; no se atribuye automáticamente ese fallo a best_model.pt.
+
+Última ventana: 29/100 éxitos; epsilon final 0.0503.
+
+H06 results_seed23
+
+Semilla 23; 2000 episodios; máximo de episodios alcanzado. Última modificación del modelo: 23/11/2026 02:37:08.
+
+Agotó el presupuesto, pero su modelo final completó la evaluación. La reconstrucción del costo es -0.03. Un mayor número de episodios no se interpreta como una mejora automática de rapidez.
+
+Última ventana: 31/100 éxitos; epsilon final 0.0530.
+
+H07 results_seed66_tiempo002
+
+Semilla 66; 2000 episodios; máximo de episodios alcanzado. Última modificación del modelo: 23/11/2026 02:46:20.
+
+Agotó el presupuesto y el modelo final chocó. Aunque la carpeta dice tiempo002, el retorno y los pasos son compatibles con costo -0.03 bajo los supuestos indicados. Se conserva el nombre original y se aclara la discrepancia.
+
+Última ventana: 31/100 éxitos; epsilon final 0.0504.
+
+
+
+
+6 Comparación controlada nueva
+
+El 24 de noviembre se completó una comparación nueva para separar la exploración previa de una prueba con un único cambio declarado. Se contrastó la constante original +0.01 frente a -0.02, con semillas 42, 66 y 76 por condición. Estas ejecuciones son posteriores al historial anterior y conservan sus fechas reales.
+
+Periodo de ejecución de la matriz: 24/11/2026 00:02:02 a 24/11/2026 00:11:36. Los horarios completos de cada corrida se conservan en metadata_corrida.json.
+
+Control | Valor común
+
+Presupuesto y parada | Hasta 600 episodios; ventana 100; meta 99 %. Se conservan los episodios realmente ejecutados.
+
+Red y optimización | 9-64-64-9; AdamW; learning_rate 0.0003; gamma 0.99; lote 128; misma memoria y exploración.
+
+Física y sensores | Misma pista, cinco sensores, velocidad máxima 155 y dt 1/30.
+
+Ejecución | CPU, un hilo intraoperación de PyTorch en todas las corridas nuevas; sin render.
+
+Evaluación | Modelo final, diez episodios sin exploración, inicio fijo común. Se registra cada episodio.
+
+Trazabilidad | Fuentes aisladas por condición, hashes, comando, configuración efectiva, inicio/fin y tiempo real por corrida.
+
+
+
+El ajuste a un hilo se aplicó por igual a toda la matriz nueva. Sus tiempos no se comparan directamente con las pruebas CPU/GPU previas de ocho hilos. Las diez evaluaciones repiten un mismo escenario; la replicación del aprendizaje está en las tres semillas de entrenamiento.
+
+Condición | Semilla | Episodios | Éxito | Colisión | Pasos/vuelta | Entrenamiento s
+
++0.01 | 42 | 600 | 100 % | 0 % | 298.0 | 104.8
+
++0.01 | 66 | 600 | 0 % | 100 % | No aplicable | 99.3
+
++0.01 | 76 | 600 | 0 % | 100 % | No aplicable | 69.8
+
+-0.02 | 42 | 600 | 0 % | 100 % | No aplicable | 96.5
+
+-0.02 | 66 | 600 | 0 % | 100 % | No aplicable | 89.9
+
+-0.02 | 76 | 600 | 0 % | 100 % | No aplicable | 105.4
+
+
+
+El signo de la condición indica la constante por paso: +0.01 premia permanecer activo; -0.02 aplica un costo por paso. El resto de la fórmula se conserva. Los registros por episodio y los modelos se encuentran en Evidencias_controladas, separados de las carpetas históricas de Desktop.
+
+
+
+
+7 Resumen de la comparación y lectura de resultados
+
+Constante | Éxito media y DE | Colisión media y DE | Pasos media y DE | Semillas con vueltas
+
++0.01 | 33.33 ± 57.74 % | 66.67 ± 57.74 % | 298.00 (DE no aplicable) | 1/3
+
+-0.02 | 0.00 ± 0.00 % | 100.00 ± 0.00 % | No aplicable | 0/3
+
+
+
+DE es la desviación estándar muestral entre las tres semillas. En las columnas de éxito y colisión se usan las tres semillas. Los pasos excluyen las semillas sin episodios exitosos; el tamaño efectivo se declara en la última columna. No se sustituyen los fallos por cero pasos.
+
+Con +0.01, el éxito medio entre semillas fue 33.33 % y con -0.02 fue 0.00 %. La interpretación prioriza terminar la vuelta y evitar choques. Un menor promedio de pasos calculado sobre menos semillas exitosas no basta para declarar superior a una condición.
+
+La experiencia previa permitió detectar que más episodios no garantizan una mejora continua y que la tasa de éxito de entrenamiento incluye exploración. Por eso los modelos finales se midieron sin azar en la selección de acciones y se conservaron los resultados desfavorables.
+
+Los retornos no se usan para ordenar ambas condiciones: al cambiar la recompensa, cambia la escala de la puntuación. La prioridad de optimización es éxito y colisiones, seguida por pasos entre vueltas completas. El checkpoint best_model se elige por retorno móvil de entrenamiento y no necesariamente coincide con el más rápido o con el modelo final evaluado.
+
+Las seis corridas nuevas cubren el contraste mínimo de dos configuraciones con tres semillas. No sustituyen los otros contrastes del README ni la comparación pendiente con azar y reglas bajo un protocolo común. Esta bitácora documenta el trabajo; el informe final, el video y la presentación se preparan a partir de su evidencia.
+
+
+
+
+8 Narrativa de trabajo y continuidad
+
+La primera etapa consistió en hacer reproducible el entorno y entender qué parte del paquete simulaba la pista y qué parte aprendía. La ausencia inicial de Python 3.11 se resolvió con un entorno local. La prueba de AMD mostró que la tarjeta podía entrenar, pero la comparación técnica favoreció CPU para esta red pequeña; esa medición sustentó la elección del dispositivo.
+
+La segunda etapa fue exploratoria. Se obtuvieron modelos con diferentes semillas, se cambió la ventana de éxito y se ensayaron costos por paso. Las observaciones de conducción ayudaron a separar retorno, éxito y rapidez. También aparecieron fallos y oscilaciones que se conservaron como parte del aprendizaje experimental, en lugar de reportar únicamente una corrida favorable.
+
+Al revisar el historial se detectó que el texto del 90 % y las gráficas podían quedar desactualizados respecto de config.py. Se corrigió esa inconsistencia y se verificó el formato con distintos porcentajes. La revisión de checkpoints evitó atribuir a corridas antiguas valores escritos después en la configuración.
+
+La tercera etapa cerró una comparación controlada de la recompensa original frente a un costo por paso, con tres semillas y fuentes aisladas por condición. Cada ejecución nueva conserva su fecha, comando y datos. Esta separación permite contar el proceso con claridad: preparación técnica, exploración de hipótesis, detección de limitaciones y contraste reproducible.
+
+Limitaciones que permanecen
+
+La evaluación usa un inicio fijo. Diez repeticiones no son diez condiciones iniciales distintas. Las tres semillas aportan variación del aprendizaje, pero la pista sigue siendo simple y la evidencia no demuestra generalización a pistas nuevas ni conducción real.
+
+Las corridas históricas no guardaron una copia completa de la recompensa y la física. Su costo por paso se reconstruyó con supuestos, a diferencia de las corridas nuevas que sí tienen snapshots. No se asignan tiempos de entrenamiento históricos donde solo existe la fecha de modificación del archivo.
+
+Evidencia que acompaña esta bitácora
+
+registro_verificado.json: configuración, métricas y hashes de las siete corridas históricas; diferencias contra el código original; versiones y prueba CPU/GPU; reconstrucción condicional de recompensas.
+
+Fuentes_estado_actual: copia del estado del código al reunir la bitácora. Evidencias_controladas: fuentes por condición, manifiestos, comandos, logs, checkpoints, CSV, gráficas, evaluación por episodio y resumen de las seis corridas nuevas.
+
+La bitácora no incluye un anexo impreso del código completo. Los archivos ejecutables y sus evidencias se conservan como archivos del proyecto.

@@ -1,0 +1,17 @@
+.venv/
+.venv-amd/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+cache_matplotlib/
+tensorboard/
+events.out.tfevents.*
+runs/
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+Thumbs.db
+.DS_Store

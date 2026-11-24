@@ -1,0 +1,928 @@
+{
+  "status": "completed",
+  "real_execution": true,
+  "start": {
+    "utc": "2026-11-24T06:02:00.860004+00:00",
+    "america_mexico_city": "2026-11-24T00:02:00.860004-06:00"
+  },
+  "planned_conditions": [
+    [
+      "base_mas001",
+      0.01
+    ],
+    [
+      "costo_menos002",
+      -0.02
+    ]
+  ],
+  "training_seeds": [
+    42,
+    66,
+    76
+  ],
+  "max_episodes_per_run": 600,
+  "success_window": 100,
+  "early_stop_rate": 0.99,
+  "device": "cpu",
+  "cpu_threads": 1,
+  "evaluation_protocol": "final_model.pt; 10 episodios, training=False y random_start=False, mismo escenario repetido",
+  "return_warning": "Los retornos entre funciones de recompensa distintas no son directamente comparables.",
+  "runs": [
+    {
+      "status": "completed",
+      "start": {
+        "utc": "2026-11-24T06:02:02.182726+00:00",
+        "america_mexico_city": "2026-11-24T00:02:02.182726-06:00"
+      },
+      "real_execution": true,
+      "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_base_mas001",
+      "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_base_mas001\\manifest_fuentes.json",
+      "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\base_mas001_seed42",
+      "condition_step_coefficient": 0.01,
+      "seed": 42,
+      "max_episodes": 600,
+      "cpu_threads": 1,
+      "cpu_interop_threads": 8,
+      "device": "cpu",
+      "python": "3.11.9",
+      "pytorch": "2.15.0+cpu",
+      "numpy": "2.4.6",
+      "snapshot_train_config_defaults": {
+        "episodes": 5000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "track_config": {
+        "width": 1000,
+        "height": 700,
+        "center_x": 500.0,
+        "center_y": 350.0,
+        "outer_a": 430.0,
+        "outer_b": 285.0,
+        "inner_a": 255.0,
+        "inner_b": 125.0,
+        "sensor_range": 175.0,
+        "sensor_step": 4.0,
+        "target_laps": 1.0,
+        "max_steps": 1800
+      },
+      "car_config": {
+        "radius": 12.0,
+        "max_speed": 155.0,
+        "acceleration": 105.0,
+        "braking": 150.0,
+        "rolling_friction": 28.0,
+        "turn_rate": 2.35,
+        "dt": 0.03333333333333333
+      },
+      "argv": [
+        "train.py",
+        "--episodes",
+        "600",
+        "--seed",
+        "42",
+        "--output",
+        "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\base_mas001_seed42"
+      ],
+      "training_end": {
+        "utc": "2026-11-24T06:03:46.975670+00:00",
+        "america_mexico_city": "2026-11-24T00:03:46.975670-06:00"
+      },
+      "training_wall_seconds": 104.77022420000048,
+      "episodes_executed": 600,
+      "total_training_steps": 106097,
+      "effective_train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "last_window_success_rate": 0.61,
+      "stop_reason": "episode_budget",
+      "evaluation_start": {
+        "utc": "2026-11-24T06:03:46.993718+00:00",
+        "america_mexico_city": "2026-11-24T00:03:46.993718-06:00"
+      },
+      "evaluation": {
+        "checkpoint": "final_model.pt",
+        "episodes": 10,
+        "render": null,
+        "training": false,
+        "random_start": false,
+        "reset_seeds": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009
+        ],
+        "unique_initial_conditions": 1,
+        "repeated_same_scenario": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "mean_return": 159.47385489904397,
+        "successful_episodes": 10,
+        "mean_steps_successful": 298.0,
+        "mean_simulated_seconds_successful": 9.933333333333335,
+        "all_episode_outcomes_identical": true,
+        "wall_seconds": 0.33527909999975236
+      },
+      "end": {
+        "utc": "2026-11-24T06:03:47.329846+00:00",
+        "america_mexico_city": "2026-11-24T00:03:47.329846-06:00"
+      },
+      "total_wall_seconds": 105.12363199999982,
+      "condition": "base_mas001",
+      "coefficient": 0.01,
+      "subprocess_exit_code": 0
+    },
+    {
+      "status": "completed",
+      "start": {
+        "utc": "2026-11-24T06:03:48.869859+00:00",
+        "america_mexico_city": "2026-11-24T00:03:48.869859-06:00"
+      },
+      "real_execution": true,
+      "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002",
+      "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002\\manifest_fuentes.json",
+      "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed42",
+      "condition_step_coefficient": -0.02,
+      "seed": 42,
+      "max_episodes": 600,
+      "cpu_threads": 1,
+      "cpu_interop_threads": 8,
+      "device": "cpu",
+      "python": "3.11.9",
+      "pytorch": "2.15.0+cpu",
+      "numpy": "2.4.6",
+      "snapshot_train_config_defaults": {
+        "episodes": 5000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "track_config": {
+        "width": 1000,
+        "height": 700,
+        "center_x": 500.0,
+        "center_y": 350.0,
+        "outer_a": 430.0,
+        "outer_b": 285.0,
+        "inner_a": 255.0,
+        "inner_b": 125.0,
+        "sensor_range": 175.0,
+        "sensor_step": 4.0,
+        "target_laps": 1.0,
+        "max_steps": 1800
+      },
+      "car_config": {
+        "radius": 12.0,
+        "max_speed": 155.0,
+        "acceleration": 105.0,
+        "braking": 150.0,
+        "rolling_friction": 28.0,
+        "turn_rate": 2.35,
+        "dt": 0.03333333333333333
+      },
+      "argv": [
+        "train.py",
+        "--episodes",
+        "600",
+        "--seed",
+        "42",
+        "--output",
+        "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed42"
+      ],
+      "training_end": {
+        "utc": "2026-11-24T06:05:25.344642+00:00",
+        "america_mexico_city": "2026-11-24T00:05:25.344642-06:00"
+      },
+      "training_wall_seconds": 96.45064629999979,
+      "episodes_executed": 600,
+      "total_training_steps": 101451,
+      "effective_train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "last_window_success_rate": 0.0,
+      "stop_reason": "episode_budget",
+      "evaluation_start": {
+        "utc": "2026-11-24T06:05:25.360127+00:00",
+        "america_mexico_city": "2026-11-24T00:05:25.360127-06:00"
+      },
+      "evaluation": {
+        "checkpoint": "final_model.pt",
+        "episodes": 10,
+        "render": null,
+        "training": false,
+        "random_start": false,
+        "reset_seeds": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009
+        ],
+        "unique_initial_conditions": 1,
+        "repeated_same_scenario": true,
+        "success_rate": 0.0,
+        "collision_rate": 1.0,
+        "mean_return": 3.5196958112790604,
+        "successful_episodes": 0,
+        "mean_steps_successful": null,
+        "mean_simulated_seconds_successful": null,
+        "all_episode_outcomes_identical": true,
+        "wall_seconds": 0.09886730000107491
+      },
+      "end": {
+        "utc": "2026-11-24T06:05:25.459919+00:00",
+        "america_mexico_city": "2026-11-24T00:05:25.459919-06:00"
+      },
+      "total_wall_seconds": 96.56542190000073,
+      "condition": "costo_menos002",
+      "coefficient": -0.02,
+      "subprocess_exit_code": 0
+    },
+    {
+      "status": "completed",
+      "start": {
+        "utc": "2026-11-24T06:05:27.012756+00:00",
+        "america_mexico_city": "2026-11-24T00:05:27.012756-06:00"
+      },
+      "real_execution": true,
+      "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_base_mas001",
+      "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_base_mas001\\manifest_fuentes.json",
+      "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\base_mas001_seed66",
+      "condition_step_coefficient": 0.01,
+      "seed": 66,
+      "max_episodes": 600,
+      "cpu_threads": 1,
+      "cpu_interop_threads": 8,
+      "device": "cpu",
+      "python": "3.11.9",
+      "pytorch": "2.15.0+cpu",
+      "numpy": "2.4.6",
+      "snapshot_train_config_defaults": {
+        "episodes": 5000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "track_config": {
+        "width": 1000,
+        "height": 700,
+        "center_x": 500.0,
+        "center_y": 350.0,
+        "outer_a": 430.0,
+        "outer_b": 285.0,
+        "inner_a": 255.0,
+        "inner_b": 125.0,
+        "sensor_range": 175.0,
+        "sensor_step": 4.0,
+        "target_laps": 1.0,
+        "max_steps": 1800
+      },
+      "car_config": {
+        "radius": 12.0,
+        "max_speed": 155.0,
+        "acceleration": 105.0,
+        "braking": 150.0,
+        "rolling_friction": 28.0,
+        "turn_rate": 2.35,
+        "dt": 0.03333333333333333
+      },
+      "argv": [
+        "train.py",
+        "--episodes",
+        "600",
+        "--seed",
+        "66",
+        "--output",
+        "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\base_mas001_seed66"
+      ],
+      "training_end": {
+        "utc": "2026-11-24T06:07:06.338078+00:00",
+        "america_mexico_city": "2026-11-24T00:07:06.338078-06:00"
+      },
+      "training_wall_seconds": 99.3206108000013,
+      "episodes_executed": 600,
+      "total_training_steps": 100311,
+      "effective_train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 66,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "last_window_success_rate": 0.0,
+      "stop_reason": "episode_budget",
+      "evaluation_start": {
+        "utc": "2026-11-24T06:07:06.352827+00:00",
+        "america_mexico_city": "2026-11-24T00:07:06.352827-06:00"
+      },
+      "evaluation": {
+        "checkpoint": "final_model.pt",
+        "episodes": 10,
+        "render": null,
+        "training": false,
+        "random_start": false,
+        "reset_seeds": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009
+        ],
+        "unique_initial_conditions": 1,
+        "repeated_same_scenario": true,
+        "success_rate": 0.0,
+        "collision_rate": 1.0,
+        "mean_return": -3.0790937043669366,
+        "successful_episodes": 0,
+        "mean_steps_successful": null,
+        "mean_simulated_seconds_successful": null,
+        "all_episode_outcomes_identical": true,
+        "wall_seconds": 0.08738670000093407
+      },
+      "end": {
+        "utc": "2026-11-24T06:07:06.440986+00:00",
+        "america_mexico_city": "2026-11-24T00:07:06.440986-06:00"
+      },
+      "total_wall_seconds": 99.42287650000071,
+      "condition": "base_mas001",
+      "coefficient": 0.01,
+      "subprocess_exit_code": 0
+    },
+    {
+      "status": "completed",
+      "start": {
+        "utc": "2026-11-24T06:07:07.933806+00:00",
+        "america_mexico_city": "2026-11-24T00:07:07.933806-06:00"
+      },
+      "real_execution": true,
+      "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002",
+      "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002\\manifest_fuentes.json",
+      "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed66",
+      "condition_step_coefficient": -0.02,
+      "seed": 66,
+      "max_episodes": 600,
+      "cpu_threads": 1,
+      "cpu_interop_threads": 8,
+      "device": "cpu",
+      "python": "3.11.9",
+      "pytorch": "2.15.0+cpu",
+      "numpy": "2.4.6",
+      "snapshot_train_config_defaults": {
+        "episodes": 5000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "track_config": {
+        "width": 1000,
+        "height": 700,
+        "center_x": 500.0,
+        "center_y": 350.0,
+        "outer_a": 430.0,
+        "outer_b": 285.0,
+        "inner_a": 255.0,
+        "inner_b": 125.0,
+        "sensor_range": 175.0,
+        "sensor_step": 4.0,
+        "target_laps": 1.0,
+        "max_steps": 1800
+      },
+      "car_config": {
+        "radius": 12.0,
+        "max_speed": 155.0,
+        "acceleration": 105.0,
+        "braking": 150.0,
+        "rolling_friction": 28.0,
+        "turn_rate": 2.35,
+        "dt": 0.03333333333333333
+      },
+      "argv": [
+        "train.py",
+        "--episodes",
+        "600",
+        "--seed",
+        "66",
+        "--output",
+        "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed66"
+      ],
+      "training_end": {
+        "utc": "2026-11-24T06:08:37.875405+00:00",
+        "america_mexico_city": "2026-11-24T00:08:37.875405-06:00"
+      },
+      "training_wall_seconds": 89.92898199999945,
+      "episodes_executed": 600,
+      "total_training_steps": 98255,
+      "effective_train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 66,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "last_window_success_rate": 0.0,
+      "stop_reason": "episode_budget",
+      "evaluation_start": {
+        "utc": "2026-11-24T06:08:37.889761+00:00",
+        "america_mexico_city": "2026-11-24T00:08:37.889761-06:00"
+      },
+      "evaluation": {
+        "checkpoint": "final_model.pt",
+        "episodes": 10,
+        "render": null,
+        "training": false,
+        "random_start": false,
+        "reset_seeds": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009
+        ],
+        "unique_initial_conditions": 1,
+        "repeated_same_scenario": true,
+        "success_rate": 0.0,
+        "collision_rate": 1.0,
+        "mean_return": -5.481850263258591,
+        "successful_episodes": 0,
+        "mean_steps_successful": null,
+        "mean_simulated_seconds_successful": null,
+        "all_episode_outcomes_identical": true,
+        "wall_seconds": 0.07741109999915352
+      },
+      "end": {
+        "utc": "2026-11-24T06:08:37.966759+00:00",
+        "america_mexico_city": "2026-11-24T00:08:37.966759-06:00"
+      },
+      "total_wall_seconds": 90.02111200000036,
+      "condition": "costo_menos002",
+      "coefficient": -0.02,
+      "subprocess_exit_code": 0
+    },
+    {
+      "status": "completed",
+      "start": {
+        "utc": "2026-11-24T06:08:39.405799+00:00",
+        "america_mexico_city": "2026-11-24T00:08:39.405799-06:00"
+      },
+      "real_execution": true,
+      "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_base_mas001",
+      "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_base_mas001\\manifest_fuentes.json",
+      "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\base_mas001_seed76",
+      "condition_step_coefficient": 0.01,
+      "seed": 76,
+      "max_episodes": 600,
+      "cpu_threads": 1,
+      "cpu_interop_threads": 8,
+      "device": "cpu",
+      "python": "3.11.9",
+      "pytorch": "2.15.0+cpu",
+      "numpy": "2.4.6",
+      "snapshot_train_config_defaults": {
+        "episodes": 5000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "track_config": {
+        "width": 1000,
+        "height": 700,
+        "center_x": 500.0,
+        "center_y": 350.0,
+        "outer_a": 430.0,
+        "outer_b": 285.0,
+        "inner_a": 255.0,
+        "inner_b": 125.0,
+        "sensor_range": 175.0,
+        "sensor_step": 4.0,
+        "target_laps": 1.0,
+        "max_steps": 1800
+      },
+      "car_config": {
+        "radius": 12.0,
+        "max_speed": 155.0,
+        "acceleration": 105.0,
+        "braking": 150.0,
+        "rolling_friction": 28.0,
+        "turn_rate": 2.35,
+        "dt": 0.03333333333333333
+      },
+      "argv": [
+        "train.py",
+        "--episodes",
+        "600",
+        "--seed",
+        "76",
+        "--output",
+        "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\base_mas001_seed76"
+      ],
+      "training_end": {
+        "utc": "2026-11-24T06:09:49.230511+00:00",
+        "america_mexico_city": "2026-11-24T00:09:49.230511-06:00"
+      },
+      "training_wall_seconds": 69.81923669999924,
+      "episodes_executed": 600,
+      "total_training_steps": 81654,
+      "effective_train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 76,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "last_window_success_rate": 0.0,
+      "stop_reason": "episode_budget",
+      "evaluation_start": {
+        "utc": "2026-11-24T06:09:49.245312+00:00",
+        "america_mexico_city": "2026-11-24T00:09:49.245312-06:00"
+      },
+      "evaluation": {
+        "checkpoint": "final_model.pt",
+        "episodes": 10,
+        "render": null,
+        "training": false,
+        "random_start": false,
+        "reset_seeds": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009
+        ],
+        "unique_initial_conditions": 1,
+        "repeated_same_scenario": true,
+        "success_rate": 0.0,
+        "collision_rate": 1.0,
+        "mean_return": -8.523016370604426,
+        "successful_episodes": 0,
+        "mean_steps_successful": null,
+        "mean_simulated_seconds_successful": null,
+        "all_episode_outcomes_identical": true,
+        "wall_seconds": 0.06607900000017253
+      },
+      "end": {
+        "utc": "2026-11-24T06:09:49.311312+00:00",
+        "america_mexico_city": "2026-11-24T00:09:49.311312-06:00"
+      },
+      "total_wall_seconds": 69.89995160000035,
+      "condition": "base_mas001",
+      "coefficient": 0.01,
+      "subprocess_exit_code": 0
+    },
+    {
+      "status": "completed",
+      "start": {
+        "utc": "2026-11-24T06:09:50.736536+00:00",
+        "america_mexico_city": "2026-11-24T00:09:50.736536-06:00"
+      },
+      "real_execution": true,
+      "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002",
+      "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002\\manifest_fuentes.json",
+      "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed76",
+      "condition_step_coefficient": -0.02,
+      "seed": 76,
+      "max_episodes": 600,
+      "cpu_threads": 1,
+      "cpu_interop_threads": 8,
+      "device": "cpu",
+      "python": "3.11.9",
+      "pytorch": "2.15.0+cpu",
+      "numpy": "2.4.6",
+      "snapshot_train_config_defaults": {
+        "episodes": 5000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "track_config": {
+        "width": 1000,
+        "height": 700,
+        "center_x": 500.0,
+        "center_y": 350.0,
+        "outer_a": 430.0,
+        "outer_b": 285.0,
+        "inner_a": 255.0,
+        "inner_b": 125.0,
+        "sensor_range": 175.0,
+        "sensor_step": 4.0,
+        "target_laps": 1.0,
+        "max_steps": 1800
+      },
+      "car_config": {
+        "radius": 12.0,
+        "max_speed": 155.0,
+        "acceleration": 105.0,
+        "braking": 150.0,
+        "rolling_friction": 28.0,
+        "turn_rate": 2.35,
+        "dt": 0.03333333333333333
+      },
+      "argv": [
+        "train.py",
+        "--episodes",
+        "600",
+        "--seed",
+        "76",
+        "--output",
+        "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed76"
+      ],
+      "training_end": {
+        "utc": "2026-11-24T06:11:36.117460+00:00",
+        "america_mexico_city": "2026-11-24T00:11:36.117460-06:00"
+      },
+      "training_wall_seconds": 105.37577170000077,
+      "episodes_executed": 600,
+      "total_training_steps": 121234,
+      "effective_train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 76,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "last_window_success_rate": 0.0,
+      "stop_reason": "episode_budget",
+      "evaluation_start": {
+        "utc": "2026-11-24T06:11:36.133460+00:00",
+        "america_mexico_city": "2026-11-24T00:11:36.133460-06:00"
+      },
+      "evaluation": {
+        "checkpoint": "final_model.pt",
+        "episodes": 10,
+        "render": null,
+        "training": false,
+        "random_start": false,
+        "reset_seeds": [
+          10000,
+          10001,
+          10002,
+          10003,
+          10004,
+          10005,
+          10006,
+          10007,
+          10008,
+          10009
+        ],
+        "unique_initial_conditions": 1,
+        "repeated_same_scenario": true,
+        "success_rate": 0.0,
+        "collision_rate": 1.0,
+        "mean_return": -7.207770511503567,
+        "successful_episodes": 0,
+        "mean_steps_successful": null,
+        "mean_simulated_seconds_successful": null,
+        "all_episode_outcomes_identical": true,
+        "wall_seconds": 0.07452240000020538
+      },
+      "end": {
+        "utc": "2026-11-24T06:11:36.208461+00:00",
+        "america_mexico_city": "2026-11-24T00:11:36.208461-06:00"
+      },
+      "total_wall_seconds": 105.46658180000122,
+      "condition": "costo_menos002",
+      "coefficient": -0.02,
+      "subprocess_exit_code": 0
+    }
+  ],
+  "aggregates": {
+    "base_mas001": {
+      "coefficient": 0.01,
+      "completed_seeds": [
+        42,
+        66,
+        76
+      ],
+      "all_three_seeds_complete": true,
+      "success_rate": {
+        "n": 3,
+        "mean": 0.3333333333333333,
+        "sample_std": 0.5773502691896257
+      },
+      "collision_rate": {
+        "n": 3,
+        "mean": 0.6666666666666666,
+        "sample_std": 0.5773502691896257
+      },
+      "return_within_condition_only": {
+        "n": 3,
+        "mean": 49.290581608024205,
+        "sample_std": 95.46032871482088
+      },
+      "steps_successful_seed_means": {
+        "n": 1,
+        "mean": 298.0,
+        "sample_std": null
+      },
+      "simulated_seconds_successful_seed_means": {
+        "n": 1,
+        "mean": 9.933333333333335,
+        "sample_std": null
+      },
+      "note_steps": "Se excluyen semillas sin éxitos de los pasos; n declara cuántas semillas aportan."
+    },
+    "costo_menos002": {
+      "coefficient": -0.02,
+      "completed_seeds": [
+        42,
+        66,
+        76
+      ],
+      "all_three_seeds_complete": true,
+      "success_rate": {
+        "n": 3,
+        "mean": 0.0,
+        "sample_std": 0.0
+      },
+      "collision_rate": {
+        "n": 3,
+        "mean": 1.0,
+        "sample_std": 0.0
+      },
+      "return_within_condition_only": {
+        "n": 3,
+        "mean": -3.0566416544943658,
+        "sample_std": 5.760283068012104
+      },
+      "steps_successful_seed_means": {
+        "n": 0,
+        "mean": null,
+        "sample_std": null
+      },
+      "simulated_seconds_successful_seed_means": {
+        "n": 0,
+        "mean": null,
+        "sample_std": null
+      },
+      "note_steps": "Se excluyen semillas sin éxitos de los pasos; n declara cuántas semillas aportan."
+    }
+  },
+  "last_update": {
+    "utc": "2026-11-24T06:11:36.478461+00:00",
+    "america_mexico_city": "2026-11-24T00:11:36.478461-06:00"
+  },
+  "end": {
+    "utc": "2026-11-24T06:11:36.478461+00:00",
+    "america_mexico_city": "2026-11-24T00:11:36.478461-06:00"
+  }
+}

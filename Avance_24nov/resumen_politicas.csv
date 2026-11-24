@@ -1,0 +1,7 @@
+﻿inicio,politica,episodios,exitos,colisiones,tasa_exito,tasa_colision,retorno_medio,pasos_vueltas_exitosas,DE_pasos_exitosos
+fijo,DQN_final_seed76,30,30,0,1,0,150.6031125407296,288,0.0
+fijo,reglas,30,30,0,1,0,148.2192492172472,547,0.0
+fijo,azar,30,0,20,0,0.6666666666666666,-32.47359492673337,,
+aleatorio,DQN_final_seed76,30,30,0,1,0,150.62685288574784,288.1,0.30512857662936466
+aleatorio,reglas,30,30,0,1,0,148.1902461450715,546.8333333333334,0.3790490217894517
+aleatorio,azar,30,0,21,0,0.7,-33.424428407431996,,

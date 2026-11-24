@@ -1,0 +1,35 @@
+Dispositivo: cpu | Observaciones: 9 | Acciones: 9
+Episodio    1 | retorno   -37.53 | éxito móvil  0.0% | epsilon 0.978
+Episodio   20 | retorno    11.62 | éxito móvil  5.0% | epsilon 0.739
+Episodio   40 | retorno    12.36 | éxito móvil  5.0% | epsilon 0.655
+Episodio   60 | retorno    28.35 | éxito móvil  5.0% | epsilon 0.592
+Episodio   80 | retorno    25.07 | éxito móvil  7.5% | epsilon 0.534
+Episodio  100 | retorno    43.69 | éxito móvil  8.0% | epsilon 0.487
+Episodio  120 | retorno   150.62 | éxito móvil 16.0% | epsilon 0.440
+Episodio  140 | retorno   151.26 | éxito móvil 35.0% | epsilon 0.384
+Episodio  160 | retorno    -6.43 | éxito móvil 43.0% | epsilon 0.350
+Episodio  180 | retorno    -4.93 | éxito móvil 41.0% | epsilon 0.332
+Episodio  200 | retorno    -6.02 | éxito móvil 39.0% | epsilon 0.316
+Episodio  220 | retorno    -5.94 | éxito móvil 30.0% | epsilon 0.303
+Episodio  240 | retorno    48.72 | éxito móvil 10.0% | epsilon 0.287
+Episodio  260 | retorno    -1.79 | éxito móvil  3.0% | epsilon 0.266
+Episodio  280 | retorno   -12.59 | éxito móvil 10.0% | epsilon 0.247
+Episodio  300 | retorno   -12.61 | éxito móvil 10.0% | epsilon 0.241
+Episodio  320 | retorno   -10.47 | éxito móvil 10.0% | epsilon 0.235
+Episodio  340 | retorno    -8.79 | éxito móvil 10.0% | epsilon 0.229
+Episodio  360 | retorno    -8.29 | éxito móvil  8.0% | epsilon 0.223
+Episodio  380 | retorno     1.11 | éxito móvil  0.0% | epsilon 0.217
+Episodio  400 | retorno    -6.77 | éxito móvil  0.0% | epsilon 0.211
+Episodio  420 | retorno    -5.38 | éxito móvil  1.0% | epsilon 0.199
+Episodio  440 | retorno    -4.62 | éxito móvil  1.0% | epsilon 0.189
+Episodio  460 | retorno    -2.05 | éxito móvil  1.0% | epsilon 0.181
+Episodio  480 | retorno    -6.68 | éxito móvil  1.0% | epsilon 0.177
+Episodio  500 | retorno    -6.94 | éxito móvil  1.0% | epsilon 0.172
+Episodio  520 | retorno    -8.16 | éxito móvil  0.0% | epsilon 0.168
+Episodio  540 | retorno    -6.54 | éxito móvil  0.0% | epsilon 0.164
+Episodio  560 | retorno     0.32 | éxito móvil  0.0% | epsilon 0.160
+Episodio  580 | retorno     2.47 | éxito móvil  0.0% | epsilon 0.155
+Episodio  600 | retorno    55.03 | éxito móvil  0.0% | epsilon 0.150
+Evaluación final: {'evaluation_reward_mean': 3.5196958112790604, 'evaluation_success_rate': 0.0, 'evaluation_collision_rate': 1.0}
+Resultados guardados en: C:\Users\Javas\Documents\Codex\2026-11-22\vamo\outputs\Bitacora_Carrito\Evidencias_controladas\costo_menos002_seed42
+RUN_METADATA {"status": "completed", "start": {"utc": "2026-11-24T06:03:48.869859+00:00", "america_mexico_city": "2026-11-24T00:03:48.869859-06:00"}, "real_execution": true, "source_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002", "source_manifest": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002\\manifest_fuentes.json", "output_directory": "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed42", "condition_step_coefficient": -0.02, "seed": 42, "max_episodes": 600, "cpu_threads": 1, "cpu_interop_threads": 8, "device": "cpu", "python": "3.11.9", "pytorch": "2.15.0+cpu", "numpy": "2.4.6", "snapshot_train_config_defaults": {"episodes": 5000, "hidden_size": 64, "learning_rate": 0.0003, "gamma": 0.99, "batch_size": 128, "replay_capacity": 50000, "learning_starts": 1000, "epsilon_start": 1.0, "epsilon_end": 0.05, "epsilon_decay_steps": 45000, "tau": 0.005, "gradient_clip": 10.0, "seed": 42, "success_window": 100, "early_stop_rate": 0.99}, "track_config": {"width": 1000, "height": 700, "center_x": 500.0, "center_y": 350.0, "outer_a": 430.0, "outer_b": 285.0, "inner_a": 255.0, "inner_b": 125.0, "sensor_range": 175.0, "sensor_step": 4.0, "target_laps": 1.0, "max_steps": 1800}, "car_config": {"radius": 12.0, "max_speed": 155.0, "acceleration": 105.0, "braking": 150.0, "rolling_friction": 28.0, "turn_rate": 2.35, "dt": 0.03333333333333333}, "argv": ["train.py", "--episodes", "600", "--seed", "42", "--output", "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed42"], "training_end": {"utc": "2026-11-24T06:05:25.344642+00:00", "america_mexico_city": "2026-11-24T00:05:25.344642-06:00"}, "training_wall_seconds": 96.45064629999979, "episodes_executed": 600, "total_training_steps": 101451, "effective_train_config": {"episodes": 600, "hidden_size": 64, "learning_rate": 0.0003, "gamma": 0.99, "batch_size": 128, "replay_capacity": 50000, "learning_starts": 1000, "epsilon_start": 1.0, "epsilon_end": 0.05, "epsilon_decay_steps": 45000, "tau": 0.005, "gradient_clip": 10.0, "seed": 42, "success_window": 100, "early_stop_rate": 0.99}, "last_window_success_rate": 0.0, "stop_reason": "episode_budget", "evaluation_start": {"utc": "2026-11-24T06:05:25.360127+00:00", "america_mexico_city": "2026-11-24T00:05:25.360127-06:00"}, "evaluation": {"checkpoint": "final_model.pt", "episodes": 10, "render": null, "training": false, "random_start": false, "reset_seeds": [10000, 10001, 10002, 10003, 10004, 10005, 10006, 10007, 10008, 10009], "unique_initial_conditions": 1, "repeated_same_scenario": true, "success_rate": 0.0, "collision_rate": 1.0, "mean_return": 3.5196958112790604, "successful_episodes": 0, "mean_steps_successful": null, "mean_simulated_seconds_successful": null, "all_episode_outcomes_identical": true, "wall_seconds": 0.09886730000107491}, "end": {"utc": "2026-11-24T06:05:25.459919+00:00", "america_mexico_city": "2026-11-24T00:05:25.459919-06:00"}, "total_wall_seconds": 96.56542190000073}

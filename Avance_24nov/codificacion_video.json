@@ -1,0 +1,27 @@
+{
+  "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+  "imageio_ffmpeg": "0.8.1",
+  "frames": 363,
+  "fps": 30,
+  "duration_seconds": 12.1,
+  "resolution": [
+    1000,
+    700
+  ],
+  "codec": "libx264",
+  "pixel_format": "yuv420p",
+  "decode_full_passed": true,
+  "encoding_arguments": [
+    "-framerate",
+    "30",
+    "-i",
+    "fotogramas_video/%05d.jpg",
+    "-c:v",
+    "libx264",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+    "Demostracion_DQN_seed76.mp4"
+  ]
+}

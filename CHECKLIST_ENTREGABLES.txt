@@ -1,0 +1,119 @@
+CHECKLIST DE ENTREGABLES DEL CARRITO DQN
+Actualizado el martes 24 de noviembre de 2026
+Presentación: miércoles 25 de noviembre de 2026, 20 minutos por equipo de tres personas.
+
+AVANCE ACTUAL
+Bitácora terminada en Bitacora/Bitacora_Carrito_DQN.docx: siete corridas históricas y seis nuevas.
+La comparación de recompensa incluye tres semillas por condición, métricas y evidencia real.
+Ya están la comparación de políticas y el video. Faltan los contrastes restantes, el informe final integrado y la presentación.
+Las casillas pendientes significan que falta reunir o verificar la evidencia para entregar.
+
+1. PROYECTO EJECUTABLE
+[x] Entorno local Python 3.11 y dependencias instaladas.
+[x] Simulador comprobado y entrenamiento/evaluación configurados en CPU.
+[x] Modelos entrenados que cargan y completan la vuelta.
+[x] CSV, curvas y checkpoints de siete corridas propias.
+[x] Mensajes, meta de gráfica y ventana de train.py vinculados a config.py.
+[x] Actualizar el README del repositorio con CPU, comandos, configuración y archivos necesarios.
+[x] Registrar las versiones exactas del entorno CPU utilizado para la entrega.
+
+2. BITÁCORA Y TRAZABILIDAD
+[x] Construir una tabla con carpeta, semilla, configuración, episodios máximos/reales y motivo de parada.
+[~] Recompensa histórica reconstruida con supuestos explícitos; no existe snapshot completo antiguo.
+    Las seis corridas nuevas sí conservan recompensa, física y configuración completa.
+[x] Documentar cambios: CPU frente a GPU, costo por paso, ventana, meta y configuración dinámica.
+[x] Registrar incidencias, decisiones, resultados favorables y fallos, sin descartar los fallidos.
+[x] Identificar si cada resultado pertenece a final_model.pt o a best_model.pt.
+
+3. COMPARACIÓN EXPERIMENTAL
+[x] Cerrar una comparación base frente a una alternativa con al menos tres semillas por configuración.
+[x] Conservar iguales los demás factores, presupuesto y regla de parada en la comparación nueva.
+[x] Comparar DQN final seed76, azar y reglas: 30 episodios por política con inicio fijo y otros 30 con pequeñas perturbaciones; ver Avance_24nov.
+[ ] Revisar cobertura de los contrastes enumerados en el README: cinco/tres sensores, tamaño de red,
+    gamma, duración de exploración, recompensa y entrenamiento frente a evaluación sin exploración.
+
+La guía DOCX exige explícitamente base + alternativa y tres semillas por configuración.
+El README enumera más contrastes. Las siete configuraciones y 21 entrenamientos de la planeación
+previa fueron una propuesta para cubrir esa lista, no una cantidad textual exigida por el profesor.
+Tener varias semillas entrenadas no basta para marcar la comparación como completa si se cambiaron
+también la recompensa, la ventana, la meta o el presupuesto.
+
+4. EVIDENCIA Y ANÁLISIS
+[x] Guardar evaluación por episodio de los seis modelos nuevos, sin exploración del DQN.
+[x] Usar el mismo protocolo de inicio, número de episodios y límite de pasos al comparar políticas.
+[x] Reportar éxito, colisión, retorno y pasos por vuelta exitosa de la comparación nueva.
+[x] Calcular media y desviación estándar entre las tres semillas de cada condición nueva.
+[x] Conservar curvas y tabla de la comparación nueva con éxitos y fallos.
+[ ] Integrar las curvas elegidas en el informe final.
+[x] Explicar las limitaciones del inicio fijo: las repeticiones actuales no son escenarios distintos.
+[x] Comparar pasos solo en vueltas exitosas y conservar colisiones; distinguir las escalas del retorno.
+
+La evaluación automática guardada corresponde al modelo final. best_model.pt se elige por retorno
+móvil de entrenamiento y puede dar otro resultado. Los archivos .pt guardan TrainConfig, pero no
+una copia completa de la fórmula de recompensa ni del entorno utilizado en cada entrenamiento.
+
+5. INFORME FINAL EN WORD
+[ ] Problema y objetivo.
+[ ] MDP: agente, entorno, estado, acciones, recompensa y finalización.
+[ ] Método DQN: red, valores Q, Bellman, replay, red objetivo y exploración.
+[ ] Experimentos y bitácora de decisiones.
+[ ] Resultados con tablas, curvas, variabilidad y comparación de políticas/configuraciones.
+[ ] Análisis de fallos, límites de la simulación y conclusiones sustentadas en los datos.
+[ ] Revisión final con el formato simple solicitado: texto a la izquierda, sin encabezados/pies ni
+    números de página y tablas simples de bordes negros. Sin anexo de todo el código.
+
+Los Word de Bitacora y Avance_24nov documentan el trabajo; aún falta el informe final integrado del equipo.
+
+6. VIDEO
+[x] Elegir modelo de demostración: results_seed76/final_model.pt; metadata en Avance_24nov.
+[x] Video real de una vuelta con sensores y acciones: Avance_24nov/Demostracion_DQN_seed76.mp4.
+[ ] Mostrar e interpretar resultados y conclusiones en la presentación; incluir un fallo si ayuda
+    a explicar el comportamiento observado.
+[x] Video de 12.1 segundos decodificado completo sin errores y respaldado en el workspace. Falta probarlo dentro de la presentación.
+
+7. PRESENTACIÓN Y DEFENSA
+[ ] Preparar diapositivas con problema/MDP, método, experimentos, resultados, video, límites y conclusiones.
+[ ] Repartir participación entre los tres integrantes y ensayar 20 minutos completos.
+[ ] Reservar tiempo para demostrar e interpretar resultados y responder preguntas.
+[ ] Cada integrante explica un fragmento de código, una curva y una decisión experimental.
+[ ] Distinguir desempeño simulado de conducción de un vehículo real.
+
+8. CLASSROOM Y REVISIÓN FINAL
+[ ] Preparar ZIP con código, requirements, README, modelos identificados, bitácora, CSV y curvas.
+[ ] Adjuntar informe Word.
+[ ] Adjuntar presentación y video en forma que puedan reproducirse; conservar también el video por separado.
+[ ] Verificar las instrucciones y campos de entrega de Classroom antes de subir.
+[ ] Comprobar que todo abre y que el proyecto puede reproducirse.
+[x] Excluir entornos, cachés y pruebas técnicas de la copia de GitHub.
+
+INVENTARIO INICIAL RECUPERADO
+Estos datos vienen de los checkpoints y CSV guardados; la configuración actual no describe por sí
+sola todas las corridas anteriores. El éxito corresponde al CSV de evaluación automática del modelo final.
+
+Carpeta | Semilla | Episodios reales/máximos | Ventana | Meta | Éxito automático
+results | 42 | 121/600 | 30 | 90 % | 100 %
+results_seed201 | 201 | 2000/2000 | 100 | 99 % | 0 %
+results_seed23 | 23 | 2000/2000 | 100 | 99 % | 100 %
+results_seed66 | 66 | 944/2000 | 100 | 99 % | 100 %
+results_seed66_tiempo002 | 66 | 2000/2000 | 100 | 99 % | 0 %
+results_seed67 | 67 | 163/2000 | 30 | 90 % | 100 %
+results_seed76 | 76 | 122/2000 | 30 | 99 % | 100 %
+
+Todas estas corridas guardaron red de 64 neuronas por capa, gamma 0.99, learning_rate 0.0003
+y epsilon_decay_steps 45000. La recompensa histórica se reconstruyó condicionalmente en la bitácora;
+no se presenta como metadata guardada. Las nuevas corridas conservan snapshots de sus fuentes.
+No se agregan las pruebas CPU/GPU ni el evento de TensorBoard del profesor como réplicas experimentales.
+
+Fuentes de requisitos: Proyecto_Final_Carrito_DQN.docx, README.md y anuncio del profesor compartido
+en el chat. El anuncio fija los 20 minutos; la guía menciona ocho minutos de demostración.
+
+AVANCE DEL 24 DE NOVIEMBRE
+Comparacion_Politicas_Carrito.docx resume 180 evaluaciones reales y sus límites.
+El informe final integrado y las diapositivas siguen pendientes.
+Las entregas de Classroom se verifican por separado; esta lista registra el avance académico del proyecto.
+
+REPOSITORIO
+[x] Incluir código, siete corridas históricas, seis controladas, bitácora, 180 evaluaciones, video y este checklist.
+[x] Preparar instrucciones portables y conservar la atribución del paquete docente.
+[ ] Publicar y verificar la copia remota.
+[ ] Compartir el enlace y avance en Los Chilines.

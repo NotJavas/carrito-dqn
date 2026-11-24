@@ -1,0 +1,23 @@
+{
+  "source_original": "C:\\Users\\Javas\\Desktop\\Carrito\\Carrito_DQN_Profesor",
+  "snapshot_created": {
+    "utc": "2026-11-24T06:02:00.892320+00:00",
+    "america_mexico_city": "2026-11-24T00:02:00.892320-06:00"
+  },
+  "step_coefficient": 0.01,
+  "only_algorithmic_change": "La constante por paso de reward en simulator_core.py; el wrapper fija un hilo CPU en todas las corridas.",
+  "files": {
+    "car_env.py": "8302dbd54f63806fba23824ecb1f0429f1487c4d3aef6c333858694e886f5e4b",
+    "check_environment.py": "25ba01d8eb5cbfaa23f6d261196da21256b095d0f599b85b8f4a342effca2dec",
+    "config.py": "555915b8604d41aaf86338e9ad4bab7544f5482561862cf1a98ac610a9841be8",
+    "dqn_agent.py": "78c1dea8e48e5a1f28fdff4868ec398d446a8808838b186549bfedc2c6c80352",
+    "evaluate.py": "b51cdc015b46bd96761edecfa1135ce36eb97ed206c1e8238128afbfafe4ebb8",
+    "heuristic_baseline.py": "20e1489138cee9cff81e7d3c1e0a83d8021d86c21ea665bae36db9894ad79067",
+    "manual_drive.py": "a20dde5c918b3616b2562954f3b260effed69668ddd0543ba06b4e488c7eff2e",
+    "random_baseline.py": "e5f6bee384987218c7028af541dce2b3dd639fabbf1609bd39e27cd6cd3509ee",
+    "README.md": "659094e19879ca3928f0bd1f87f55ad8c847b8b8ce49435dc9ef9978fbe00bcc",
+    "requirements.txt": "da9bb2a28b9cb5d686ea2b9b08bebaeb47253e7874a944d1b577b80302a48849",
+    "simulator_core.py": "d6125d2d2a9dbeb86a2c77d60eda1ef0a62cfccab3a427d74eea8ace83a9704f",
+    "train.py": "612de25d7463763d5098b26360e7893a9fb559880c33831ad9d036320cd0d7ae"
+  }
+}

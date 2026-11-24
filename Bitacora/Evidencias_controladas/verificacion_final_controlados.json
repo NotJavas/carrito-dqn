@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "runs": 6,
+  "evaluation_rows": 60,
+  "all_cpu_threads_one": true,
+  "all_same_max_episode_budget": 600,
+  "all_same_window": 100,
+  "all_same_target": 0.99,
+  "date_note": "Las horas originales de las corridas permanecen sin cambios.",
+  "source_only_factor_verified": true
+}

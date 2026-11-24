@@ -1,0 +1,7 @@
+{
+  "different_source_files": [
+    "simulator_core.py"
+  ],
+  "all_other_source_files_identical": true,
+  "diff": "--- base +0.01\n+++ costo -0.02\n@@ -190,7 +190,7 @@\n         progress_reward = 18.0 * delta_theta\n         speed_reward = 0.035 * (self.state.speed / self.car.max_speed) * max(alignment, 0.0)\n         control_cost = 0.004 * abs(steering)\n-        reward = progress_reward + speed_reward + 0.01 - control_cost\n+        reward = progress_reward + speed_reward - 0.02 - control_cost\n \n         collision = not self.is_on_track(\n             self.state.x, self.state.y, margin=self.car.radius\n"
+}

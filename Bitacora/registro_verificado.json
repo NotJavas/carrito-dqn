@@ -1,0 +1,980 @@
+{
+  "collected_at_local": "2026-11-24T00:01:04.306075-06:00",
+  "timezone": "America/Mexico_City",
+  "project": "C:\\Users\\Javas\\Desktop\\Carrito\\Carrito_DQN_Profesor",
+  "versions_cpu": {
+    "python": "3.11.9",
+    "torch_build": "2.15.0+cpu",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "gymnasium": "1.4.0",
+    "pygame": "2.6.1",
+    "tensorboard": "2.21.0"
+  },
+  "current_train_config": {
+    "episodes": 5000,
+    "hidden_size": 64,
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "batch_size": 128,
+    "replay_capacity": 50000,
+    "learning_starts": 1000,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.05,
+    "epsilon_decay_steps": 45000,
+    "tau": 0.005,
+    "gradient_clip": 10.0,
+    "seed": 42,
+    "success_window": 100,
+    "early_stop_rate": 0.99
+  },
+  "current_track_config": {
+    "width": 1000,
+    "height": 700,
+    "center_x": 500.0,
+    "center_y": 350.0,
+    "outer_a": 430.0,
+    "outer_b": 285.0,
+    "inner_a": 255.0,
+    "inner_b": 125.0,
+    "sensor_range": 175.0,
+    "sensor_step": 4.0,
+    "target_laps": 1.0,
+    "max_steps": 1800
+  },
+  "current_car_config": {
+    "radius": 12.0,
+    "max_speed": 155.0,
+    "acceleration": 105.0,
+    "braking": 150.0,
+    "rolling_friction": 28.0,
+    "turn_rate": 2.35,
+    "dt": 0.03333333333333333
+  },
+  "current_reward_step_constant": -0.02,
+  "source_hashes": {
+    "car_env.py": "8302dbd54f63806fba23824ecb1f0429f1487c4d3aef6c333858694e886f5e4b",
+    "check_environment.py": "25ba01d8eb5cbfaa23f6d261196da21256b095d0f599b85b8f4a342effca2dec",
+    "config.py": "555915b8604d41aaf86338e9ad4bab7544f5482561862cf1a98ac610a9841be8",
+    "dqn_agent.py": "78c1dea8e48e5a1f28fdff4868ec398d446a8808838b186549bfedc2c6c80352",
+    "evaluate.py": "b51cdc015b46bd96761edecfa1135ce36eb97ed206c1e8238128afbfafe4ebb8",
+    "heuristic_baseline.py": "20e1489138cee9cff81e7d3c1e0a83d8021d86c21ea665bae36db9894ad79067",
+    "manual_drive.py": "a20dde5c918b3616b2562954f3b260effed69668ddd0543ba06b4e488c7eff2e",
+    "random_baseline.py": "e5f6bee384987218c7028af541dce2b3dd639fabbf1609bd39e27cd6cd3509ee",
+    "README.md": "659094e19879ca3928f0bd1f87f55ad8c847b8b8ce49435dc9ef9978fbe00bcc",
+    "requirements.txt": "da9bb2a28b9cb5d686ea2b9b08bebaeb47253e7874a944d1b577b80302a48849",
+    "simulator_core.py": "55e00ee5dd063213399a0e8d56ad7e98b8538e6cabce3ca0583d53c31ccea466",
+    "train.py": "612de25d7463763d5098b26360e7893a9fb559880c33831ad9d036320cd0d7ae"
+  },
+  "diffs_vs_teacher": {
+    "config.py": "--- profesor/config.py\n+++ actual/config.py\n@@ -36,7 +36,7 @@\n \n @dataclass(frozen=True)\n class TrainConfig:\n-    episodes: int = 600\n+    episodes: int = 5000\n     hidden_size: int = 64\n     learning_rate: float = 3e-4\n     gamma: float = 0.99\n@@ -49,8 +49,8 @@\n     tau: float = 0.005\n     gradient_clip: float = 10.0\n     seed: int = 42\n-    success_window: int = 30\n-    early_stop_rate: float = 0.90\n+    success_window: int = 100\n+    early_stop_rate: float = 0.99\n \n \n ACTION_NAMES = {\n",
+    "evaluate.py": "--- profesor/evaluate.py\n+++ actual/evaluate.py\n@@ -28,13 +28,7 @@\n             f\"No se encontró {args.model}. Ejecuta primero: python train.py\"\n         )\n \n-    device = torch.device(\n-        \"cuda\"\n-        if torch.cuda.is_available()\n-        else \"mps\"\n-        if torch.backends.mps.is_available()\n-        else \"cpu\"\n-    )\n+    device = torch.device(\"cpu\")  # CPU fue más rápida en la prueba de este proyecto.\n     render_mode = None if args.no_render else \"human\"\n     env = CarTrackEnv(render_mode=render_mode)\n     observation, _ = env.reset(seed=1000, options={\"random_start\": False})\n",
+    "simulator_core.py": "--- profesor/simulator_core.py\n+++ actual/simulator_core.py\n@@ -190,7 +190,7 @@\n         progress_reward = 18.0 * delta_theta\n         speed_reward = 0.035 * (self.state.speed / self.car.max_speed) * max(alignment, 0.0)\n         control_cost = 0.004 * abs(steering)\n-        reward = progress_reward + speed_reward + 0.01 - control_cost\n+        reward = progress_reward + speed_reward - 0.02 - control_cost\n \n         collision = not self.is_on_track(\n             self.state.x, self.state.y, margin=self.car.radius\n@@ -214,5 +214,4 @@\n             \"speed\": self.state.speed,\n             \"steps\": float(self.steps),\n         }\n-        return self.observation(), float(reward), terminated, truncated, info\n-\n+        return self.observation(), float(reward), terminated, truncated, info",
+    "train.py": "--- profesor/train.py\n+++ actual/train.py\n@@ -37,18 +37,23 @@\n         torch.cuda.manual_seed_all(seed)\n \n \n-def save_curves(logs: pd.DataFrame, output_path: Path) -> None:\n-    rolling_reward = logs[\"reward\"].rolling(30, min_periods=1).mean()\n-    rolling_success = logs[\"success\"].rolling(30, min_periods=1).mean()\n+def save_curves(logs: pd.DataFrame, output_path: Path, train_config: TrainConfig) -> None:\n+    rolling_reward = logs[\"reward\"].rolling(train_config.success_window, min_periods=1).mean()\n+    rolling_success = logs[\"success\"].rolling(train_config.success_window, min_periods=1).mean()\n     figure, axes = plt.subplots(2, 1, figsize=(10, 7), sharex=True)\n     axes[0].plot(logs[\"episode\"], logs[\"reward\"], alpha=0.25, color=\"#2F80ED\")\n     axes[0].plot(logs[\"episode\"], rolling_reward, color=\"#0B2545\", linewidth=2)\n     axes[0].set_ylabel(\"Retorno por episodio\")\n     axes[0].grid(alpha=0.2)\n     axes[1].plot(logs[\"episode\"], rolling_success, color=\"#00A6A6\", linewidth=2)\n-    axes[1].axhline(0.90, color=\"#E76F51\", linestyle=\"--\", label=\"Meta 90 %\")\n+    axes[1].axhline(\n+        train_config.early_stop_rate,\n+        color=\"#E76F51\",\n+        linestyle=\"--\",\n+        label=f\"Meta {train_config.early_stop_rate * 100:g} %\",\n+    )\n     axes[1].set_xlabel(\"Episodio\")\n-    axes[1].set_ylabel(\"Éxito móvil\")\n+    axes[1].set_ylabel(f\"Éxito móvil ({train_config.success_window} episodios)\")\n     axes[1].set_ylim(-0.02, 1.02)\n     axes[1].legend()\n     axes[1].grid(alpha=0.2)\n@@ -96,13 +101,7 @@\n     )\n     set_seeds(train_config.seed)\n \n-    device = torch.device(\n-        \"cuda\"\n-        if torch.cuda.is_available()\n-        else \"mps\"\n-        if torch.backends.mps.is_available()\n-        else \"cpu\"\n-    )\n+    device = torch.device(\"cpu\")  # CPU fue más rápida en la prueba de este proyecto.\n     env = CarTrackEnv(render_mode=None, track_config=track_config)\n     observation, _ = env.reset(seed=train_config.seed)\n     agent = DQNAgent(\n@@ -171,7 +170,7 @@\n \n         if writer is not None:\n             writer.add_scalar(\"train/reward\", total_reward, episode)\n-            writer.add_scalar(\"train/success_rate_30\", moving_success, episode)\n+            writer.add_scalar(f\"train/success_rate_{train_config.success_window}\", moving_success, episode)\n             writer.add_scalar(\"train/epsilon\", agent.epsilon, episode)\n             if losses:\n                 writer.add_scalar(\"train/loss\", mean(losses), episode)\n@@ -186,7 +185,11 @@\n             len(recent_success) == recent_success.maxlen\n             and moving_success >= train_config.early_stop_rate\n         ):\n-            print(\"Criterio de parada alcanzado: éxito móvil de al menos 90 %.\")\n+            print(\n+                f\"Criterio de parada alcanzado en el episodio {episode}: \"\n+                f\"{sum(recent_success)}/{len(recent_success)} éxitos \"\n+                f\"(meta {train_config.early_stop_rate * 100:g} %).\"\n+            )\n             break\n \n     env.close()\n@@ -196,7 +199,7 @@\n     agent.save(str(args.output / \"final_model.pt\"))\n     logs = pd.DataFrame(rows)\n     logs.to_csv(args.output / \"training_log.csv\", index=False)\n-    save_curves(logs, args.output / \"training_curves.png\")\n+    save_curves(logs, args.output / \"training_curves.png\", train_config)\n \n     evaluation = evaluate_without_render(agent, track_config)\n     pd.DataFrame([evaluation]).to_csv(args.output / \"evaluation_summary.csv\", index=False)\n"
+  },
+  "historical_runs": [
+    {
+      "folder": "results",
+      "train_config": {
+        "episodes": 600,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 42,
+        "success_window": 30,
+        "early_stop_rate": 0.9
+      },
+      "episodes_run": 121,
+      "first_training_success": 88,
+      "training_successes": 30,
+      "training_collisions": 90,
+      "last_window_hits": 27,
+      "last_window_size": 30,
+      "last_window_success_rate": 0.9,
+      "stop_reason": "meta de éxito alcanzada",
+      "last_epsilon": 0.4287866416239087,
+      "total_training_steps": 41377,
+      "historical_evaluation": {
+        "evaluation_reward_mean": 159.6108071945492,
+        "evaluation_success_rate": 1.0,
+        "evaluation_collision_rate": 0.0
+      },
+      "final_model_file_modified_local": "2026-11-22T22:14:17.439242-06:00",
+      "final_model_sha256": "3321d5d58830cc2007bb4e8aedbaacb1ca99dd62daac8fa1f1ef7c7e64d704f2",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results",
+        "checkpoint": "final_model.pt",
+        "seed": 42,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "159.6108071945492",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 150.7908071945492,
+            "steps": 294,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 150.7908071945492,
+            "steps": 294,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": 0.010000000000000071,
+        "nearest_candidate": 0.01,
+        "candidate_absolute_error": 7.112366251504909e-17,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "3321d5d58830cc2007bb4e8aedbaacb1ca99dd62daac8fa1f1ef7c7e64d704f2",
+        "nearest_expanded_level": 0.01,
+        "expanded_level_error": 7.112366251504909e-17
+      }
+    },
+    {
+      "folder": "results_seed201",
+      "train_config": {
+        "episodes": 2000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 201,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "episodes_run": 2000,
+      "first_training_success": 14,
+      "training_successes": 618,
+      "training_collisions": 1383,
+      "last_window_hits": 29,
+      "last_window_size": 100,
+      "last_window_success_rate": 0.29,
+      "stop_reason": "máximo de episodios alcanzado",
+      "last_epsilon": 0.050340062143084764,
+      "total_training_steps": 357079,
+      "historical_evaluation": {
+        "evaluation_reward_mean": -16.61696408090452,
+        "evaluation_success_rate": 0.0,
+        "evaluation_collision_rate": 1.0
+      },
+      "final_model_file_modified_local": "2026-11-22T23:21:13.555643-06:00",
+      "final_model_sha256": "6685cf996bf046fab8b25db7a516d514259fd87d4ccaa33ec2c891bf5650fde9",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results_seed201",
+        "checkpoint": "final_model.pt",
+        "seed": 201,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "-16.61696408090452",
+          "evaluation_success_rate": "0.0",
+          "evaluation_collision_rate": "1.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": -17.08696408090452,
+            "steps": 47,
+            "success": 0.0,
+            "collision": 1.0
+          },
+          {
+            "episode": 2,
+            "reward": -17.08696408090452,
+            "steps": 47,
+            "success": 0.0,
+            "collision": 1.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.010000000000000024,
+        "nearest_candidate": -0.01,
+        "candidate_absolute_error": 2.42861286636753e-17,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "6685cf996bf046fab8b25db7a516d514259fd87d4ccaa33ec2c891bf5650fde9",
+        "nearest_expanded_level": -0.01,
+        "expanded_level_error": 2.42861286636753e-17
+      }
+    },
+    {
+      "folder": "results_seed23",
+      "train_config": {
+        "episodes": 2000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 23,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "episodes_run": 2000,
+      "first_training_success": 43,
+      "training_successes": 251,
+      "training_collisions": 1734,
+      "last_window_hits": 31,
+      "last_window_size": 100,
+      "last_window_success_rate": 0.31,
+      "stop_reason": "máximo de episodios alcanzado",
+      "last_epsilon": 0.05299169394081717,
+      "total_training_steps": 259228,
+      "historical_evaluation": {
+        "evaluation_reward_mean": 148.60877758414512,
+        "evaluation_success_rate": 1.0,
+        "evaluation_collision_rate": 0.0
+      },
+      "final_model_file_modified_local": "2026-11-23T02:37:08.964631-06:00",
+      "final_model_sha256": "f97c1805c8d35463d2f473b67a1a53c31cc42405d8392136cb3fcc5173265e02",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results_seed23",
+        "checkpoint": "final_model.pt",
+        "seed": 23,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "148.60877758414512",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 152.10877758414517,
+            "steps": 350,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 152.10877758414517,
+            "steps": 350,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.030000000000000165,
+        "nearest_candidate": -0.02,
+        "candidate_absolute_error": 0.010000000000000165,
+        "candidate_within_tolerance": false,
+        "checkpoint_sha256": "f97c1805c8d35463d2f473b67a1a53c31cc42405d8392136cb3fcc5173265e02",
+        "nearest_expanded_level": -0.03,
+        "expanded_level_error": 1.6653345369377348e-16
+      }
+    },
+    {
+      "folder": "results_seed66",
+      "train_config": {
+        "episodes": 2000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 66,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "episodes_run": 944,
+      "first_training_success": 28,
+      "training_successes": 251,
+      "training_collisions": 692,
+      "last_window_hits": 99,
+      "last_window_size": 100,
+      "last_window_success_rate": 0.99,
+      "stop_reason": "meta de éxito alcanzada",
+      "last_epsilon": 0.07642312998520015,
+      "total_training_steps": 161200,
+      "historical_evaluation": {
+        "evaluation_reward_mean": 154.13079576323406,
+        "evaluation_success_rate": 1.0,
+        "evaluation_collision_rate": 0.0
+      },
+      "final_model_file_modified_local": "2026-11-22T23:11:39.159720-06:00",
+      "final_model_sha256": "d9be2f5df163d2f7fcf33a72dcc562a85d265f7157f314ce8e2b4322a92caf58",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results_seed66",
+        "checkpoint": "final_model.pt",
+        "seed": 66,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "154.13079576323406",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 151.220795763234,
+            "steps": 291,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 151.220795763234,
+            "steps": 291,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.009999999999999816,
+        "nearest_candidate": -0.01,
+        "candidate_absolute_error": 1.8388068845354155e-16,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "d9be2f5df163d2f7fcf33a72dcc562a85d265f7157f314ce8e2b4322a92caf58",
+        "nearest_expanded_level": -0.01,
+        "expanded_level_error": 1.8388068845354155e-16
+      }
+    },
+    {
+      "folder": "results_seed66_tiempo002",
+      "train_config": {
+        "episodes": 2000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 66,
+        "success_window": 100,
+        "early_stop_rate": 0.99
+      },
+      "episodes_run": 2000,
+      "first_training_success": 45,
+      "training_successes": 448,
+      "training_collisions": 1552,
+      "last_window_hits": 31,
+      "last_window_size": 100,
+      "last_window_success_rate": 0.31,
+      "stop_reason": "máximo de episodios alcanzado",
+      "last_epsilon": 0.05044609341229081,
+      "total_training_steps": 344866,
+      "historical_evaluation": {
+        "evaluation_reward_mean": -9.733290082788908,
+        "evaluation_success_rate": 0.0,
+        "evaluation_collision_rate": 1.0
+      },
+      "final_model_file_modified_local": "2026-11-23T02:46:20.676112-06:00",
+      "final_model_sha256": "334012c0ae88f6ea9c9eb1a3cc8b129f71c7ba33f1259479dfd3ccca68cb7ef0",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results_seed66_tiempo002",
+        "checkpoint": "final_model.pt",
+        "seed": 66,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "-9.733290082788908",
+          "evaluation_success_rate": "0.0",
+          "evaluation_collision_rate": "1.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": -9.08329008278891,
+            "steps": 65,
+            "success": 0.0,
+            "collision": 1.0
+          },
+          {
+            "episode": 2,
+            "reward": -9.08329008278891,
+            "steps": 65,
+            "success": 0.0,
+            "collision": 1.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.029999999999999978,
+        "nearest_candidate": -0.02,
+        "candidate_absolute_error": 0.009999999999999978,
+        "candidate_within_tolerance": false,
+        "checkpoint_sha256": "334012c0ae88f6ea9c9eb1a3cc8b129f71c7ba33f1259479dfd3ccca68cb7ef0",
+        "nearest_expanded_level": -0.03,
+        "expanded_level_error": 2.0816681711721685e-17
+      }
+    },
+    {
+      "folder": "results_seed67",
+      "train_config": {
+        "episodes": 2000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 67,
+        "success_window": 30,
+        "early_stop_rate": 0.9
+      },
+      "episodes_run": 163,
+      "first_training_success": 40,
+      "training_successes": 59,
+      "training_collisions": 103,
+      "last_window_hits": 27,
+      "last_window_size": 30,
+      "last_window_success_rate": 0.9,
+      "stop_reason": "meta de éxito alcanzada",
+      "last_epsilon": 0.3394408254367308,
+      "total_training_steps": 53483,
+      "historical_evaluation": {
+        "evaluation_reward_mean": 160.22005485639127,
+        "evaluation_success_rate": 1.0,
+        "evaluation_collision_rate": 0.0
+      },
+      "final_model_file_modified_local": "2026-11-22T22:46:00.639933-06:00",
+      "final_model_sha256": "58f0ef56caf1aeae79874f5708b1f8ff663c18c18c75b89a66f94dbfea38b23f",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results_seed67",
+        "checkpoint": "final_model.pt",
+        "seed": 67,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "160.22005485639127",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 151.34005485639125,
+            "steps": 296,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 151.34005485639125,
+            "steps": 296,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": 0.010000000000000082,
+        "nearest_candidate": 0.01,
+        "candidate_absolute_error": 8.153200337090993e-17,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "58f0ef56caf1aeae79874f5708b1f8ff663c18c18c75b89a66f94dbfea38b23f",
+        "nearest_expanded_level": 0.01,
+        "expanded_level_error": 8.153200337090993e-17
+      }
+    },
+    {
+      "folder": "results_seed76",
+      "train_config": {
+        "episodes": 2000,
+        "hidden_size": 64,
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "replay_capacity": 50000,
+        "learning_starts": 1000,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_steps": 45000,
+        "tau": 0.005,
+        "gradient_clip": 10.0,
+        "seed": 76,
+        "success_window": 30,
+        "early_stop_rate": 0.99
+      },
+      "episodes_run": 122,
+      "first_training_success": 44,
+      "training_successes": 35,
+      "training_collisions": 85,
+      "last_window_hits": 30,
+      "last_window_size": 30,
+      "last_window_success_rate": 1.0,
+      "stop_reason": "meta de éxito alcanzada",
+      "last_epsilon": 0.4112590597221883,
+      "total_training_steps": 43509,
+      "historical_evaluation": {
+        "evaluation_reward_mean": 153.4831125407297,
+        "evaluation_success_rate": 1.0,
+        "evaluation_collision_rate": 0.0
+      },
+      "final_model_file_modified_local": "2026-11-22T23:06:00.021399-06:00",
+      "final_model_sha256": "61e946c24c9c7f630b9eec5c0176f7abd66310ac3ebfd759192abec0bd16cdf0",
+      "best_model_present": true,
+      "curve_present": true,
+      "reward_reconstruction": {
+        "carpeta": "results_seed76",
+        "checkpoint": "final_model.pt",
+        "seed": 76,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "153.4831125407297",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 150.6031125407296,
+            "steps": 288,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 150.6031125407296,
+            "steps": 288,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.009999999999999622,
+        "nearest_candidate": -0.01,
+        "candidate_absolute_error": 3.7816971776294395e-16,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "61e946c24c9c7f630b9eec5c0176f7abd66310ac3ebfd759192abec0bd16cdf0",
+        "nearest_expanded_level": -0.01,
+        "expanded_level_error": 3.7816971776294395e-16
+      }
+    }
+  ],
+  "cpu_amd_probe": {
+    "status": "verified",
+    "hardware": "AMD Radeon RX 9070 XT",
+    "gpu_driver_tested": "32.0.31044.16",
+    "cpu_environment": ".venv",
+    "amd_environment": ".venv-amd",
+    "original_python_logic_preserved": true,
+    "smoke": [
+      {
+        "backend": "amd",
+        "episodes": 20,
+        "seed": 42,
+        "steps": 14621,
+        "wall_seconds": 36.1725687,
+        "ms_per_dqn_update": 2.5689150000016525,
+        "mean_training_reward": 32.450492768188646
+      },
+      {
+        "backend": "cpu",
+        "episodes": 20,
+        "seed": 42,
+        "steps": 14433,
+        "wall_seconds": 17.456375,
+        "ms_per_dqn_update": 1.6160824999951728,
+        "mean_training_reward": 25.55348716160243
+      }
+    ]
+  },
+  "reward_reconstruction": {
+    "method": "Reconstrucción condicional del término constante por paso de la recompensa",
+    "formula": "c_historico = c_actual + (R_historico - R_actual) / pasos",
+    "candidate_coefficients": [
+      0.01,
+      -0.01,
+      -0.02
+    ],
+    "absolute_tolerance": 1e-08,
+    "current_train_config_defaults": {
+      "episodes": 5000,
+      "hidden_size": 64,
+      "learning_rate": 0.0003,
+      "gamma": 0.99,
+      "batch_size": 128,
+      "replay_capacity": 50000,
+      "learning_starts": 1000,
+      "epsilon_start": 1.0,
+      "epsilon_end": 0.05,
+      "epsilon_decay_steps": 45000,
+      "tau": 0.005,
+      "gradient_clip": 10.0,
+      "seed": 42,
+      "success_window": 100,
+      "early_stop_rate": 0.99
+    },
+    "current_track_config": {
+      "width": 1000,
+      "height": 700,
+      "center_x": 500.0,
+      "center_y": 350.0,
+      "outer_a": 430.0,
+      "outer_b": 285.0,
+      "inner_a": 255.0,
+      "inner_b": 125.0,
+      "sensor_range": 175.0,
+      "sensor_step": 4.0,
+      "target_laps": 1.0,
+      "max_steps": 1800
+    },
+    "current_car_config": {
+      "radius": 12.0,
+      "max_speed": 155.0,
+      "acceleration": 105.0,
+      "braking": 150.0,
+      "rolling_friction": 28.0,
+      "turn_rate": 2.35,
+      "dt": 0.03333333333333333
+    },
+    "evaluation_protocol": {
+      "device": "cpu",
+      "render": null,
+      "episodes_per_model": 2,
+      "reset_seeds": [
+        10000,
+        10001
+      ],
+      "random_start": false,
+      "training": false,
+      "checkpoint": "final_model.pt",
+      "agent_config": "TrainConfig del checkpoint"
+    },
+    "assumptions": [
+      "La física, el entorno, el criterio de fin y todos los demás términos de recompensa históricos eran iguales a los actuales.",
+      "El CSV histórico corresponde a final_model.pt de la misma carpeta y a evaluación con el mismo inicio fijo.",
+      "La política y su trayectoria no cambian; el término constante de recompensa no participa en la selección de acciones durante inferencia.",
+      "Las dos repeticiones solo comprueban determinismo local; no demuestran fidelidad histórica ni robustez en inicios distintos.",
+      "El ajuste numérico con un candidato no sustituye un snapshot histórico de la recompensa."
+    ],
+    "source_sha256": {
+      "config.py": "555915b8604d41aaf86338e9ad4bab7544f5482561862cf1a98ac610a9841be8",
+      "simulator_core.py": "55e00ee5dd063213399a0e8d56ad7e98b8538e6cabce3ca0583d53c31ccea466",
+      "car_env.py": "8302dbd54f63806fba23824ecb1f0429f1487c4d3aef6c333858694e886f5e4b",
+      "dqn_agent.py": "78c1dea8e48e5a1f28fdff4868ec398d446a8808838b186549bfedc2c6c80352",
+      "train.py": "612de25d7463763d5098b26360e7893a9fb559880c33831ad9d036320cd0d7ae"
+    },
+    "records": [
+      {
+        "carpeta": "results",
+        "checkpoint": "final_model.pt",
+        "seed": 42,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "159.6108071945492",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 150.7908071945492,
+            "steps": 294,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 150.7908071945492,
+            "steps": 294,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": 0.010000000000000071,
+        "nearest_candidate": 0.01,
+        "candidate_absolute_error": 7.112366251504909e-17,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "3321d5d58830cc2007bb4e8aedbaacb1ca99dd62daac8fa1f1ef7c7e64d704f2",
+        "nearest_expanded_level": 0.01,
+        "expanded_level_error": 7.112366251504909e-17
+      },
+      {
+        "carpeta": "results_seed201",
+        "checkpoint": "final_model.pt",
+        "seed": 201,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "-16.61696408090452",
+          "evaluation_success_rate": "0.0",
+          "evaluation_collision_rate": "1.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": -17.08696408090452,
+            "steps": 47,
+            "success": 0.0,
+            "collision": 1.0
+          },
+          {
+            "episode": 2,
+            "reward": -17.08696408090452,
+            "steps": 47,
+            "success": 0.0,
+            "collision": 1.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.010000000000000024,
+        "nearest_candidate": -0.01,
+        "candidate_absolute_error": 2.42861286636753e-17,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "6685cf996bf046fab8b25db7a516d514259fd87d4ccaa33ec2c891bf5650fde9",
+        "nearest_expanded_level": -0.01,
+        "expanded_level_error": 2.42861286636753e-17
+      },
+      {
+        "carpeta": "results_seed23",
+        "checkpoint": "final_model.pt",
+        "seed": 23,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "148.60877758414512",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 152.10877758414517,
+            "steps": 350,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 152.10877758414517,
+            "steps": 350,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.030000000000000165,
+        "nearest_candidate": -0.02,
+        "candidate_absolute_error": 0.010000000000000165,
+        "candidate_within_tolerance": false,
+        "checkpoint_sha256": "f97c1805c8d35463d2f473b67a1a53c31cc42405d8392136cb3fcc5173265e02",
+        "nearest_expanded_level": -0.03,
+        "expanded_level_error": 1.6653345369377348e-16
+      },
+      {
+        "carpeta": "results_seed66",
+        "checkpoint": "final_model.pt",
+        "seed": 66,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "154.13079576323406",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 151.220795763234,
+            "steps": 291,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 151.220795763234,
+            "steps": 291,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.009999999999999816,
+        "nearest_candidate": -0.01,
+        "candidate_absolute_error": 1.8388068845354155e-16,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "d9be2f5df163d2f7fcf33a72dcc562a85d265f7157f314ce8e2b4322a92caf58",
+        "nearest_expanded_level": -0.01,
+        "expanded_level_error": 1.8388068845354155e-16
+      },
+      {
+        "carpeta": "results_seed66_tiempo002",
+        "checkpoint": "final_model.pt",
+        "seed": 66,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "-9.733290082788908",
+          "evaluation_success_rate": "0.0",
+          "evaluation_collision_rate": "1.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": -9.08329008278891,
+            "steps": 65,
+            "success": 0.0,
+            "collision": 1.0
+          },
+          {
+            "episode": 2,
+            "reward": -9.08329008278891,
+            "steps": 65,
+            "success": 0.0,
+            "collision": 1.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.029999999999999978,
+        "nearest_candidate": -0.02,
+        "candidate_absolute_error": 0.009999999999999978,
+        "candidate_within_tolerance": false,
+        "checkpoint_sha256": "334012c0ae88f6ea9c9eb1a3cc8b129f71c7ba33f1259479dfd3ccca68cb7ef0",
+        "nearest_expanded_level": -0.03,
+        "expanded_level_error": 2.0816681711721685e-17
+      },
+      {
+        "carpeta": "results_seed67",
+        "checkpoint": "final_model.pt",
+        "seed": 67,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "160.22005485639127",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 151.34005485639125,
+            "steps": 296,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 151.34005485639125,
+            "steps": 296,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": 0.010000000000000082,
+        "nearest_candidate": 0.01,
+        "candidate_absolute_error": 8.153200337090993e-17,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "58f0ef56caf1aeae79874f5708b1f8ff663c18c18c75b89a66f94dbfea38b23f",
+        "nearest_expanded_level": 0.01,
+        "expanded_level_error": 8.153200337090993e-17
+      },
+      {
+        "carpeta": "results_seed76",
+        "checkpoint": "final_model.pt",
+        "seed": 76,
+        "classification": "reconstruido condicional; no es metadato guardado",
+        "historical_evaluation": {
+          "evaluation_reward_mean": "153.4831125407297",
+          "evaluation_success_rate": "1.0",
+          "evaluation_collision_rate": "0.0"
+        },
+        "current_coefficient_per_step": -0.02,
+        "current_evaluations": [
+          {
+            "episode": 1,
+            "reward": 150.6031125407296,
+            "steps": 288,
+            "success": 1.0,
+            "collision": 0.0
+          },
+          {
+            "episode": 2,
+            "reward": 150.6031125407296,
+            "steps": 288,
+            "success": 1.0,
+            "collision": 0.0
+          }
+        ],
+        "two_fixed_start_evaluations_match": true,
+        "historical_outcome_matches_current": true,
+        "estimated_historical_coefficient": -0.009999999999999622,
+        "nearest_candidate": -0.01,
+        "candidate_absolute_error": 3.7816971776294395e-16,
+        "candidate_within_tolerance": true,
+        "checkpoint_sha256": "61e946c24c9c7f630b9eec5c0176f7abd66310ac3ebfd759192abec0bd16cdf0",
+        "nearest_expanded_level": -0.01,
+        "expanded_level_error": 3.7816971776294395e-16
+      }
+    ]
+  },
+  "user_confirmation": {
+    "text": "usé -0.03 y me salté el 0.02 y luego volví al 0.02",
+    "meaning": "Confirma exploración con -0.03 y retorno a -0.02; no asigna inequívocamente cada carpeta."
+  }
+}

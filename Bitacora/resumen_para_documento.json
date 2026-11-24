@@ -1,0 +1,33 @@
+{
+  "historical_ids": {
+    "H01": "results",
+    "H02": "results_seed67",
+    "H03": "results_seed76",
+    "H04": "results_seed66",
+    "H05": "results_seed201",
+    "H06": "results_seed23",
+    "H07": "results_seed66_tiempo002"
+  },
+  "controlled_aggregates": [
+    {
+      "coefficient": 0.01,
+      "success_mean": 33.333333333333336,
+      "success_sd": 57.735026918962575,
+      "collision_mean": 66.66666666666667,
+      "collision_sd": 57.735026918962575,
+      "steps_n": 1,
+      "steps_mean": 298.0,
+      "steps_sd": null
+    },
+    {
+      "coefficient": -0.02,
+      "success_mean": 0.0,
+      "success_sd": 0.0,
+      "collision_mean": 100.0,
+      "collision_sd": 0.0,
+      "steps_n": 0,
+      "steps_mean": null,
+      "steps_sd": null
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "fecha_verificacion": "2026-11-24T14:28:46.606882-06:00",
+  "check_environment": "passed, SDL dummy para render sin ventana",
+  "modelo_demostracion": "results_seed76/final_model.pt",
+  "sha256_modelo": "61e946c24c9c7f630b9eec5c0176f7abd66310ac3ebfd759192abec0bd16cdf0",
+  "evaluacion_modelo": {
+    "episodes": 2,
+    "success_rate": 1,
+    "collision_rate": 0,
+    "steps": 288,
+    "reward": 150.6031125407296
+  },
+  "comparacion_portable": {
+    "episodes": 180,
+    "summary_matches_original": true,
+    "source": "comparar_politicas.py",
+    "note": "Validación adicional de la copia para publicar; no son nuevas semillas de entrenamiento."
+  },
+  "readme_local_links": "passed",
+  "binary_hashes": "passed",
+  "entornos_y_cache": "excluidos por .gitignore"
+}

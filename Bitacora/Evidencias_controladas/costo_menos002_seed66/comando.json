@@ -1,0 +1,13 @@
+[
+  "C:\\Users\\Javas\\Desktop\\Carrito\\Carrito_DQN_Profesor\\.venv\\Scripts\\python.exe",
+  "-u",
+  "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\ejecutar_controlados_wrapper.py",
+  "--source",
+  "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\fuentes_costo_menos002",
+  "--output",
+  "C:\\Users\\Javas\\Documents\\Codex\\2026-11-22\\vamo\\outputs\\Bitacora_Carrito\\Evidencias_controladas\\costo_menos002_seed66",
+  "--seed",
+  "66",
+  "--coefficient",
+  "-0.02"
+]
